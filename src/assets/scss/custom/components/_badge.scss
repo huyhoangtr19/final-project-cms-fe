@@ -1,0 +1,148 @@
+// 
+// _badge.scss
+// 
+
+
+.badge {
+  &[href] {
+
+    &:hover,
+    &:focus {
+      color: var(--#{$prefix}secondary-bg);
+    }
+  }
+}
+
+// Soft badge
+@mixin badge-variant-soft($bg) {
+  color: $bg;
+  background-color: rgba($bg, 0.18) !important;
+
+  &[href] {
+
+    &:hover,
+    &:focus {
+      color: $bg;
+      text-decoration: none;
+      background-color: rgba($bg, 0.4);
+    }
+  }
+}
+
+@each $color, $value in $theme-colors {
+  .badge {
+    &.bg-#{$color} {
+      &[href] {
+
+        &:hover,
+        &:focus {
+          background-color: darken($value, 4%) !important;
+        }
+      }
+    }
+  }
+
+  .badge {
+    &.bg-light {
+      color: var(--#{$prefix}body-color);
+
+      &[href] {
+
+        &:hover,
+        &:focus {
+          color: var(--#{$prefix}body-color);
+        }
+      }
+    }
+  }
+
+  .badge-soft-#{$color} {
+    @include badge-variant-soft($value);
+  }
+
+}
+
+.rounded-pill {
+  padding-right: .6em;
+  padding-left: .6em;
+}
+
+// Dark badge
+
+.badge.bg-dark {
+  color: var(--#{$prefix}light);
+}
+
+/* Badges - Enhanced with better proportions */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: $space-2 $space-4;
+  font-size: $text-sm;
+  font-weight: $font-medium;
+  border-radius: $radius-full;
+  line-height: 1;
+  letter-spacing: 0.01em;
+}
+
+.badge-success {
+  background-color: $color-success-light;
+  color: $color-success;
+}
+
+.badge-warning {
+  background-color: $color-warning-light;
+  color: $color-warning;
+}
+
+.badge-error {
+  background-color: $color-error-light;
+  color: $color-error;
+}
+
+.badge-primary {
+  background-color: rgba(58, 59, 92, 0.1);
+  color: $actiwell-navy;
+}
+
+.badge-info {
+  background-color: rgba(37, 99, 235, 0.1);
+  color: $actiwell-navy;
+}
+
+.badge-ongoing {
+  background-color: rgba(136, 94, 254, 0.1);
+  color: $actiwell-navy;
+}
+
+.badge-onhold {
+  background-color: rgba(180, 181, 180, 0.1);
+  color: $actiwell-navy;
+}
+
+.badge-basic {
+  background-color: rgba($color-info, 0.1);
+  color: $color-info;
+}
+
+.badge-silver {
+  background-color: rgba($color-silver, 0.3);
+  color: $color-gray-500;
+}
+
+.badge-gold {
+  background-color: rgba($color-gold, 0.15);
+  color: $color-gold;
+}
+
+.badge-vip {
+  background-color: rgba($color-vip, 0.16);
+  color: $color-vip;
+}
+
+@media screen and (max-width: $bp-phone) {
+  .badge {
+    padding: $space-1 $space-2;
+    border-radius: $radius-xl;
+  }
+}

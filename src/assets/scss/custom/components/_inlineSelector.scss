@@ -1,0 +1,81 @@
+.inline-selector-container {
+    display: flex;
+    width: fit-content;
+    padding: $space-1;
+    background-color: $color-gray-200;
+    border-radius: $radius-sm;
+}
+
+.inline-selector-item {
+    padding: $space-1 $space-3;
+    border-radius: $radius-sm;
+    font-size: $text-sm;
+    font-weight: $font-semibold;
+    text-align: center;
+    background-color: transparent;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+
+    &.active {
+        background-color: $color-white;
+    }
+}
+
+.inline-selector-item-success {
+    padding: $space-1 $space-3;
+    border-radius: $radius-sm;
+    font-size: $text-sm;
+    font-weight: $font-semibold;
+    text-align: center;
+    background-color: transparent;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+
+    &.active {
+        background-color: $success;
+        color: $actiwell-cream;
+    }
+}
+
+.inline-selector-item-danger {
+    padding: $space-1 $space-3;
+    border-radius: $radius-sm;
+    font-size: $text-sm;
+    font-weight: $font-semibold;
+    text-align: center;
+    background-color: transparent;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+
+    &.active {
+        background-color: $danger;
+        color: $actiwell-cream;
+    }
+}
+
+.inline-selector-item-info {
+    padding: $space-1 $space-3;
+    border-radius: $radius-sm;
+    font-size: $text-sm;
+    font-weight: $font-semibold;
+    text-align: center;
+    background-color: transparent;
+    transition: background-color 0.2s ease;
+    cursor: pointer;
+
+    &.active {
+        background-color: $info;
+        color: $actiwell-cream;
+    }
+}
+
+@media screen and (max-width: $bp-phone) {
+    .inline-selector-container {
+        width: 100%;
+    }
+
+    .inline-selector-item {
+        flex: 1;
+        font-size: $text-xs;
+    }
+}

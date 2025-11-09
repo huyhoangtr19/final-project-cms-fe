@@ -1,0 +1,312 @@
+/*
+Template Name: Skote - Admin & Dashboard Template
+Author: Themesbrand
+Version: 4.1.0.
+Website: https://themesbrand.com/
+Contact: themesbrand@gmail.com
+File: Main Css File
+*/
+
+//Fonts
+@import "custom/fonts/fonts";
+
+//Core files
+@import "./node_modules/bootstrap/scss/functions";
+@import "./node_modules/bootstrap/scss/variables";
+@import "variables";
+@import "variables-dark";
+@import "./node_modules/bootstrap/scss/mixins.scss";
+
+// Structure
+@import "custom/structure/general";
+@import "custom/structure/topbar";
+@import "custom/structure/page-head";
+@import "custom/structure/footer";
+@import "custom/structure/right-sidebar";
+@import "custom/structure/vertical";
+@import "custom/structure/horizontal-nav";
+@import "custom/structure/layouts";
+
+// Components
+@import "custom/components/waves";
+@import "custom/components/avatar";
+@import "custom/components/accordion";
+@import "custom/components/helper";
+@import "custom/components/preloader";
+@import "custom/components/forms";
+@import "custom/components/widgets";
+@import "custom/components/demos";
+@import "custom/components/print";
+@import "custom/components/badge";
+@import "custom/components/tabs";
+@import "custom/components/filters";
+@import "custom/components/calendar";
+@import "custom/components/permissionsPanel";
+@import "custom/components/kanban";
+@import "custom/components/packageItem";
+@import "custom/components/commissionItem";
+@import "custom/components/input";
+@import "custom/components/dashboardCardSummary";
+@import "custom/components/inlineSelector";
+@import "custom/components/myPagination";
+@import "custom/pages/dashboard/dashboardCard";
+@import "custom/components/radioSelector";
+@import "custom/components/policyTierCard";
+
+// Plugins
+@import "custom/plugins/custom-scrollbar";
+@import "custom/plugins/calendar";
+@import "custom/plugins/calendar-full";
+@import "custom/plugins/dragula";
+@import "custom/plugins/session-timeout";
+@import "custom/plugins/range-slider";
+@import "custom/plugins/sweatalert2";
+@import "custom/plugins/rating";
+@import "custom/plugins/toastr";
+@import "custom/plugins/parsley";
+@import "custom/plugins/select2";
+@import "custom/plugins/icons/fontawesome-all";
+@import "custom/plugins/switch";
+@import "custom/plugins/colorpicker";
+@import "custom/plugins/timepicker";
+@import "custom/plugins/datepicker";
+@import "custom/plugins/bootstrap-touchspin";
+@import "custom/plugins/form-editors";
+@import "custom/plugins/form-upload";
+@import "custom/plugins/form-wizard";
+@import "custom/plugins/datatable";
+@import "custom/plugins/responsive-table";
+@import "custom/plugins/table-editable";
+@import "custom/plugins/apexcharts";
+@import "custom/plugins/echarts";
+@import "custom/plugins/flot";
+@import "custom/plugins/sparkline-chart";
+@import "custom/plugins/google-map";
+@import "custom/plugins/vector-maps";
+@import "custom/plugins/leaflet-maps";
+
+// Pages
+@import "custom/pages/authentication";
+@import "custom/pages/ecommerce";
+@import "custom/pages/email";
+@import "custom/pages/file-manager";
+@import "custom/pages/chat";
+@import "custom/pages/projects";
+@import "custom/pages/contacts";
+@import "custom/pages/crypto";
+@import "custom/pages/coming-soon";
+@import "custom/pages/timeline";
+@import "custom/pages/extras-pages";
+@import "custom/pages/jobs";
+@import "custom/pages/sales";
+@import "custom/pages/market-segment";
+@import "custom/pages/customers";
+@import "custom/pages/dashboard/dashboard";
+@import "custom/pages/dashboard/cardSummarySection";
+@import "custom/pages/dashboard/customerPredictionSection";
+@import "custom/pages/dashboard/staffSection";
+@import "custom/pages/dashboard/salesSection";
+@import "custom/pages/dashboard/blackBookSection";
+@import "custom/pages/staffs";
+@import "custom/pages/policy";
+
+body div[style*="position: fixed"][style*="width: 100%"][style*="height: 100%"][style*="top: 0"][style*="left: 0"][style*="right: 0"][style*="bottom: 0"][style*="background-color: rgba(0, 0, 0, 0.5)"][style*="z-index: 99999"] {
+  display: none;
+}
+
+.fc-license-message {
+  display: none !important;
+}
+.fc .fc-timeline-slot-cushion {
+  padding: 4px 24px;
+}
+.fc-timeline-event {
+  // background-color: red !important;
+  z-index: unset !important;
+}
+.fc-event .fc-event-main {
+  z-index: unset !important;
+}
+.fc-event {
+  overflow: hidden;
+}
+// .fc .fc-timeline-events {
+//   z-index: unset !important;
+// }
+.fc-timeline-events:focus-within {
+  z-index: unset !important;
+}
+.fc-timegrid-slot-label-cushion {
+  // padding: 10px 4px !important;
+}
+.fc-timegrid-slot-label {
+  padding: 15px 0 !important;
+}
+// .highlighted-toolbar {
+//   background-color: $actiwell-red;
+// }
+
+.fc .fc-daygrid-day-top {
+  justify-content: center;
+}
+.fc-timegrid-col-misc {
+  display: none !important;
+}
+.fc-list-event-dot {
+  display: none !important;
+}
+.fc-timegrid-event-harness
+  > .fc-event
+  > .fc-event-main
+  > .event-hover-day-class,
+.fc-timegrid-event-harness-inset
+  > .fc-event
+  > .fc-event-main
+  > .event-hover-day-class {
+  z-index: unset !important;
+}
+.fc-timegrid-event-harness {
+  z-index: unset !important;
+}
+.ql-editor {
+  min-height: 300px !important;
+}
+.ql-toolbar {
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+}
+.ql-container {
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+.notification-error {
+  .ql-toolbar.ql-snow,
+  .ql-container.ql-snow {
+    border: 1px solid #f46a6a !important;
+  }
+  .ql-container.ql-snow {
+    border-top: 0px !important;
+  }
+}
+
+.over-flow-hidden {
+  overflow: hidden;
+  @media (max-width: 768px) {
+    font-size: 9px !important;
+    // padding:0 2px;
+  }
+}
+@media (max-width: 768px) {
+  .fc-toolbar {
+    font-size: 12px !important;
+  }
+
+  .fc-day-header {
+    font-size: 10px !important;;
+  }
+
+  /* Optional: Adjust the day grid layout for mobile */
+  .fc-list-event-title{
+    padding-left: 0px !important;
+  }
+
+  .chart-container {
+    --chart-height: 400px;
+    min-height: var(--chart-height) !important;
+    width: 100%;
+  }
+}
+
+.table-sticky-header {
+  overflow: auto; /* Enable vertical scrolling */
+  max-height: 500px;
+  margin-top: 12px; /* Set a maximum height for the table container */
+}
+
+.table-sticky-header thead tr th {
+  position: sticky;
+  top: 0;
+  background-color: #f8f9fa; /* Optional: Add a background color */
+  z-index: 1; /* Ensure the header is above the table content */
+}
+.border-receipt{
+  td {
+    border : 1px solid #000 !important;
+  }
+}
+.e-kanban .e-card-footer-css {
+	align-self: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    height: 16px;
+    width: 16px;
+    margin-right: 8px;
+}
+.e-kanban .e-improvement {
+    background-image: url(https://syncfusion.atlassian.net/secure/viewavatar?size=medium&avatarId=15507&avatarType=issuetype);
+}
+.e-kanban .e-story {
+    background-image: url(https://syncfusion.atlassian.net/secure/viewavatar?size=medium&avatarId=15515&avatarType=issuetype);
+}
+.e-kanban .e-epic {
+    background-image: url(https://syncfusion.atlassian.net/secure/viewavatar?size=medium&avatarId=15507&avatarType=issuetype);
+}
+.e-kanban .e-bug {
+    background-image: url(https://syncfusion.atlassian.net/secure/viewavatar?size=medium&avatarId=15503&avatarType=issuetype);
+}
+.e-kanban .e-others {
+    background-image: url(https://syncfusion.atlassian.net/images/icons/issuetypes/documentation.png);
+}
+.e-kanban .e-card-footer .e-low.e-card-footer-css {
+    margin-right: auto;
+    background-image: url(https://syncfusion.atlassian.net/images/icons/priorities/trivial.svg);
+}
+.e-kanban .e-card-footer .e-high.e-card-footer-css {
+    margin-right: auto;
+    background-image: url(https://syncfusion.atlassian.net/images/icons/priorities/major.svg);
+}
+.e-kanban .e-card-footer .e-critical.e-card-footer-css {
+    margin-right: auto;
+    background-image: url(https://syncfusion.atlassian.net/images/icons/priorities/critical.svg);
+}
+.e-kanban .e-card-footer .e-release.e-card-footer-css {
+    margin-right: auto;
+    background-image: url(https://syncfusion.atlassian.net/images/icons/priorities/critical.svg);
+}
+.e-kanban .e-card-footer .e-normal.e-card-footer-css {
+    margin-right: auto;
+    background-image: url(https://syncfusion.atlassian.net/images/icons/priorities/minor.svg);
+}
+.e-kanban .e-nancy-davloio {
+    background-image: url(https://ej2.syncfusion.com/react/demos/src/kanban/images/Nancy%20Davloio.png);
+}
+.e-kanban .e-andrew-fuller {
+    background-image: url(https://ej2.syncfusion.com/react/demos/src/kanban/images/Andrew%20Fuller.png);
+}
+.e-kanban .e-janet-leverling {
+    background-image: url(https://ej2.syncfusion.com/react/demos/src/kanban/images/Janet%20Leverling.png);
+}
+.e-kanban .e-steven-walker {
+    background-image: url(https://ej2.syncfusion.com/react/demos/src/kanban/images/Steven%20walker.png);
+}
+.e-kanban .e-michael-suyama {
+    background-image: url(https://ej2.syncfusion.com/react/demos/src/kanban/images/Michael%20Suyama.png);
+}
+.e-kanban .e-robert-king {
+    background-image: url(https://ej2.syncfusion.com/react/demos/src/kanban/images/Robert%20King.png);
+}
+.e-kanban .e-margaret-hamilt {
+    background-image: url(https://ej2.syncfusion.com/react/demos/src/kanban/images/Margaret%20hamilt.png);
+}
+  
+.e-kanban .e-nancy-davloio, .e-kanban .e-andrew-fuller, .e-kanban .e-janet-leverling,
+.e-kanban .e-steven-walker, .e-kanban .e-michael-suyama, .e-kanban .e-robert-king, .e-kanban .e-margaret-hamilt  {
+    border-radius: 72px;
+    height: 24px;
+    width: 24px;
+}
+div[style*="position: fixed"][style*="z-index: 999999999"][style*="background: #EEF2FF"] {
+  /* Your styles or outline for debugging */
+ display: none !important;
+}

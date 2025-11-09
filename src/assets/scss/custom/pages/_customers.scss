@@ -1,0 +1,60 @@
+.customer-row {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: $space-8;
+    margin-top: $space-2;
+}
+
+.customer-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.customer-dob {
+    width: 80%
+}
+
+.customer-age {
+    width: 20%
+}
+
+.customer-label {
+    margin: $space-2 0 $space-1 !important;
+    font-size: $text-base;
+    color: $actiwell-navy;
+    font-weight: $font-medium;
+}
+
+.customer-referrer {
+    width: 50%
+}
+
+.customer-detail-item-small {
+    margin-bottom: 3px;
+}
+
+.customer-items-container {
+    display: flex;
+    flex-direction: row;
+    gap: $space-3;
+}
+
+@media screen and (max-width: $bp-phone) {
+    .customer-row {
+        flex-direction: column;
+        gap: 0;
+    }
+}
+
+@media screen and (max-width: 950px) {
+    .customer-items-container {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .customer-referrer {
+        width: 100%;
+    }
+}

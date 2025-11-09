@@ -1,0 +1,84 @@
+.customer-prediction-header {
+    display: flex;
+    gap: $space-2;
+    justify-content: space-between;
+    margin-bottom: $space-3;
+}
+
+.customer-prediction-all {
+    display: flex;
+    flex-direction: column;
+    gap: $space-3;
+}
+
+.customer-prediction-cards {
+    display: flex;
+    gap: $space-3;
+    height: 100%;
+
+    .customer-prediction-pie-legend {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: $space-3;
+        row-gap: $space-1;
+        width: 100%;
+
+        .legend-container {
+            display: flex;
+            align-items: center;
+            gap: $space-1;
+            cursor: pointer;
+        }
+    }
+
+    .dashboard-card-container {
+        height: 25rem;
+
+        &:first-child {
+            flex: 2;
+        }
+
+        &:last-child {
+            flex: 6;
+        }
+
+        .dashboard-card-body {
+            display: flex;
+            flex-direction: column;
+
+            .customer-prediction-pie-container,
+            .customer-prediction-bar-container {
+                flex: 1;
+            }
+
+            .my-pagination {
+                margin-top: $space-1 !important;
+            }
+        }
+    }
+}
+
+@media screen and (max-width: $bp-phone) {
+    .customer-prediction-header {
+        flex-direction: column;
+        justify-content: flex-start;
+    }
+
+    .customer-prediction-cards {
+        flex-direction: column;
+
+        .dashboard-card-container {
+            height: 25rem;
+
+            &:first-child {
+                flex: none;
+            }
+
+            &:last-child {
+                flex: none;
+            }
+        }
+    }
+}

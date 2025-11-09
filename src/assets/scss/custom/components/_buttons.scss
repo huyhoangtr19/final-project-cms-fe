@@ -1,0 +1,344 @@
+//
+// _buttons.scss
+//
+
+button,
+a {
+    outline: none !important;
+}
+
+// Rounded Buttons
+.btn-rounded {
+    border-radius: 30px;
+}
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: $space-2;
+    padding: $space-2;
+    font-family: $font-family-primary;
+    font-size: $text-sm;
+    font-weight: $font-medium;
+    line-height: 1;
+    border: 2px solid transparent;
+    border-radius: $radius-lg;
+    cursor: pointer;
+    transition: all $transition-fast;
+    text-decoration: none;
+    white-space: nowrap;
+    user-select: none;
+    box-shadow: $shadow-sm;
+    position: relative;
+    overflow: hidden;
+    z-index: 0;
+
+    &:hover {
+        transform: translateY(-1px);
+        box-shadow: $shadow-md;
+    }
+
+    &:active {
+        transform: translateY(0);
+        box-shadow: $shadow-sm;
+    }
+}
+
+.btn-primary {
+    background-color: $actiwell-navy;
+    border-radius: $radius-lg;
+    font-weight: $font-medium;
+    transition: all $transition-fast;
+
+    &:hover {
+        background-color: $actiwell-navy-dark;
+        border-color: $actiwell-navy-dark;
+    }
+}
+
+.btn-secondary {
+    background-color: $actiwell-red;
+    color: $actiwell-cream;
+    border-color: $actiwell-red;
+
+    &:hover {
+        background-color: $actiwell-red-dark;
+        border-color: $actiwell-red-dark;
+    }
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: $actiwell-navy;
+    border-color: $actiwell-navy;
+
+    &:hover {
+        background-color: $actiwell-navy;
+        color: $actiwell-cream;
+    }
+}
+
+.btn-outline-purple {
+    background-color: transparent;
+    color: #7c3aed;
+    border-color: #7c3aed;
+
+    &:hover {
+        background-color: #7c3aed;
+        color: $actiwell-cream;
+    }
+
+    input {
+        accent-color: #7c3aed;
+    }
+}
+
+.btn-outline-warning {
+    background-color: transparent;
+    color: $warning;
+    border-color: $warning;
+
+    &:hover {
+        background-color: $warning;
+        color: $actiwell-cream;
+    }
+
+    input {
+        accent-color: $warning;
+    }
+}
+
+.btn-back {
+    background-color: transparent;
+    color: $success;
+    border-color: $success;
+
+    &:hover {
+        background-color: $success;
+        color: $actiwell-cream;
+    }
+}
+
+.btn.disabled {
+    opacity: 30%;
+}
+
+.btn-delete-outline {
+    background-color: transparent;
+    color: $danger;
+    border-color: $danger;
+
+    &:hover {
+        background-color: $danger;
+        color: $actiwell-cream;
+    }
+}
+
+.btn-outline-secondary {
+    background-color: transparent;
+    color: $actiwell-red;
+    border-color: $actiwell-red;
+
+    &:hover {
+        background-color: $actiwell-red;
+        color: $actiwell-cream;
+    }
+}
+
+.btn-ghost {
+    background-color: transparent;
+    color: $color-gray-600;
+    border-color: transparent;
+    box-shadow: none;
+
+    &:hover {
+        background-color: $color-gray-100;
+        color: $color-gray-900;
+        box-shadow: $shadow-sm;
+    }
+}
+
+.btn-sm {
+    padding: $space-1 $space-3;
+    font-size: $text-sm;
+    gap: $space-2;
+}
+
+.btn-lg {
+    padding: $space-4 $space-6;
+    font-size: $text-lg;
+    gap: $space-4;
+}
+
+.btn-in-class-toggle {
+    position: absolute;
+    top: $space-2;
+    right: $space-2;
+    font-size: $text-xs;
+    border: 2px solid $actiwell-navy;
+    width: fit-content !important;
+
+    &:hover {
+        border: 2px solid $actiwell-navy;
+    }
+
+    &.active {
+        background-color: $color-success;
+        color: $actiwell-cream;
+        border-color: #187a3c !important;
+    }
+
+    @media screen and (max-width: $bp-phone) {
+        font-size: $text-xs !important;
+    }
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
+    gap: $space-3;
+    width: 100%;
+}
+
+@media screen and (max-width: $bp-phone) {
+    .btn {
+        font-size: $text-sm;
+        padding: $space-1 $space-2;
+        width: 100%;
+        border-radius: $radius-md;
+    }
+
+    .action-buttons {
+        flex-direction: column;
+        justify-content: start;
+        gap: $space-1;
+    }
+
+    #btn-settings {
+        display: none;
+    }
+}
+
+#vertical-menu-btn {
+    width: max-content;
+}
+
+// example 1
+
+.btn-group-example {
+    .btn {
+        position: relative;
+
+        &:first-child {
+            &::before {
+                display: none;
+            }
+        }
+
+        &:before {
+            content: "OR";
+            position: absolute;
+            font-size: 10px;
+            width: 24px;
+            height: 24px;
+            line-height: 24px;
+            border-radius: 50%;
+            background-color: var(--#{$prefix}secondary-color);
+            color: var(--#{$prefix}secondary-bg);
+            border: 1px solid var(--#{$prefix}secondary-bg);
+            left: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+    }
+}
+
+// Example 2
+
+.btn-label {
+    position: relative;
+    padding-left: 44px;
+
+    .label-icon {
+        position: absolute;
+        width: 32px;
+        height: 100%;
+        left: 0;
+        top: 0;
+        background-color: rgba($white, 0.1);
+        border-right: 1px solid rgba($white, 0.1);
+        font-size: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &.btn-light {
+        .label-icon {
+            background-color: rgba($dark, 0.1);
+            border-right: 1px solid rgba($dark, 0.2);
+        }
+    }
+}
+
+
+.btn-group-vertical {
+    label {
+        margin-bottom: 0px;
+    }
+}
+
+
+//
+// Soft Buttons
+// 
+
+@mixin button-variant-soft($bg) {
+    color: $bg;
+    background-color: rgba($bg, 0.1);
+    border-color: transparent;
+    transition: all 0.5s ease;
+
+    &:hover,
+    &:focus,
+    &:active {
+        color: $white;
+        background-color: $bg;
+        border-color: transparent;
+    }
+}
+
+@each $color,
+$value in $theme-colors {
+    .btn-soft-#{$color} {
+        @include button-variant-soft($value);
+    }
+}
+
+.like-btn {
+    &.active {
+        .bx-heart {
+            color: $danger;
+
+            &:before {
+                content: "\ec8f";
+            }
+        }
+    }
+}
+
+.input-checbox-button {
+    margin: 0;
+
+    &:checked {
+        background-color: $actiwell-red;
+        border-color: $actiwell-red;
+    }
+
+    &:focus {
+        box-shadow: none !important;
+    }
+}

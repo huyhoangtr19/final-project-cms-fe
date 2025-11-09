@@ -1,0 +1,52 @@
+.dashboard-card-container {
+    display: flex;
+    flex-direction: column;
+    padding: $space-2;
+    border: 1px solid $color-gray-200;
+    border-radius: $radius-md;
+    box-shadow: $shadow-sm;
+}
+
+.dashboard-card-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: $space-2;
+}
+
+.dashboard-card-title {
+    flex: 1;
+    font-size: $text-lg;
+    font-weight: $font-semibold;
+    margin: 0;
+    text-wrap: wrap;
+}
+
+.dashboard-card-body {
+    height: 100%;
+}
+
+.dashboard-card-details-section {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+
+    .filter-select {
+        padding: $space-1 $space-2;
+    }
+}
+
+.dashboard-card-details {
+    font-weight: $font-medium;
+    color: $actiwell-navy;
+    padding: $space-1 $space-2;
+    border-radius: $radius-md;
+    margin: 0;
+    width: fit-content;
+    text-wrap: wrap;
+}
+
+@media screen and (max-width: $bp-phone) {
+    .dashboard-card-title {
+        font-size: $text-base;
+    }
+}

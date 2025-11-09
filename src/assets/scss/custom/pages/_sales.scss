@@ -1,0 +1,211 @@
+.sales-grid {
+    display: flex;
+    width: 100%;
+    gap: $space-3;
+
+    .sales-order {
+        display: flex;
+        flex-direction: column;
+        flex: 2;
+        gap: inherit;
+    }
+
+    .sales-order-details {
+        .sales-form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: $space-6;
+
+            @media screen and (max-width: $bp-phone) {
+                grid-template-columns: repeat(1, 1fr);
+                gap: $space-3;
+            }
+        }
+    }
+
+    .sales-order-summary {
+        display: flex;
+        flex-direction: column;
+        height: max-content;
+    }
+
+    @media screen and (max-width: 1300px) {
+        flex-direction: column;
+    }
+
+    label,
+    p {
+        margin: 0;
+    }
+}
+
+.sales-sticky {
+    position: sticky;
+    top: 0;
+}
+
+.sales-summaries {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: inherit;
+    height: max-content;
+}
+
+.sales-card {
+    border-radius: $radius-xl;
+    border: 1px solid $color-gray-200;
+    box-shadow: $shadow-sm;
+
+    &:focus-within,
+    &:hover {
+        border-color: $actiwell-navy;
+    }
+}
+
+.sales-card-header {
+    display: flex;
+    justify-content: space-between;
+    padding: $space-3;
+    color: $actiwell-red;
+}
+
+.sales-card-title {
+    font-size: $text-xl;
+    margin-bottom: 0;
+}
+
+.sales-card-body {
+    padding: $space-3;
+}
+
+.sales-package-grid-form {
+    display: flex;
+    gap: $space-3;
+
+    @media screen and (max-width: 991px) {
+        flex-direction: column;
+    }
+}
+
+.sales-package-column {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: $space-3;
+}
+
+.sales-notes-body {
+    display: flex;
+    flex-direction: column;
+    gap: $space-3;
+}
+
+.sales-summary-infos {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+}
+
+.sales-summary-info {
+    display: flex;
+    justify-content: space-between;
+    font-size: $text-base;
+}
+
+.sales-summary-total {
+    display: flex;
+    justify-content: space-between;
+    font-size: $text-xl;
+}
+
+.sales-summary-label {
+    color: $color-gray-400;
+}
+
+.sales-summary-total-discount {
+    color: $color-error;
+}
+
+.sales-percent-container {
+    display: flex;
+    gap: $space-3;
+}
+
+.sales-percent {
+    display: flex;
+    justify-content: center;
+    flex: 1;
+    border-radius: $radius-lg;
+    overflow: hidden;
+}
+
+.sales-payment-method {
+    display: flex;
+    flex: 1;
+}
+
+.sales-input-container {
+    border: 2px solid $color-gray-300;
+    border-radius: $radius-lg;
+    padding: $space-2;
+    width: 100%;
+}
+
+.sales-label-input-payment {
+    width: 100%;
+}
+
+.sales-input-checked {
+    background-color: rgba($color-info-light, 0.3);
+    border-color: $actiwell-navy;
+    border-radius: $radius-lg;
+}
+.sale-bold {
+    font-weight: 700;
+}
+.sale-card-items{
+    display: flex;
+    flex-direction: column;
+    gap: $space-3;
+    border-radius: 12px;
+    padding: $space-2;
+    border-left:4px solid rgb(20, 243, 109);
+    background-color: rgba(20, 243, 109, 0.1);
+}
+
+@media screen and (max-width: $bp-phone) {
+    .sales-grid {
+        .btn.btn-primary {
+            width: auto;
+        }
+    }
+
+    .sales-card-header {
+        flex-direction: column;
+        gap: $space-2;
+    }
+
+    .sales-card-title {
+        font-size: $text-lg;
+    }
+
+    .sales-summary-info {
+        font-size: $text-sm;
+    }
+
+    .sales-summary-total {
+        font-size: $text-base;
+    }
+}
+
+.tabs-header {
+    .tab-item.tab-disabled {
+        cursor: default;
+        color: $color-gray-400;
+        
+        &:hover{
+            background-color: white !important;
+        }
+    }
+}

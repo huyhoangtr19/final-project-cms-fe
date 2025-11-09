@@ -1,0 +1,1627 @@
+// Function Name : Booking Page
+// Created date :  6/8/24             by :  VinhLQ
+// Updated date :                     by :  VinhLQ
+
+import React, {
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+  useCallback,
+} from "react";
+import { createRoot } from "react-dom/client";
+import PropTypes from "prop-types";
+import { Button, Badge, Input, Collapse } from "reactstrap";
+import moment from "moment/moment";
+import allLocales from "@fullcalendar/core/locales-all";
+
+// import enLocale from "@fullcalendar/core/locales/en-gb";
+import Breadcrumb from "../../components/Common/Breadcrumb";
+import InputSearch from "../../components/Common/InputSearch";
+import MyDropdown from "../../components/Common/MyDropdown";
+import IcPlus from "../../assets/icon/IcPlus";
+import withRouter from "../../components/Common/withRouter";
+import customerService from "../../services/customer.service";
+import bookingService from "../../services/booking.service";
+import sourceService from "../../services/source.service";
+import operatorService from "../../services/operator.service";
+import { listStatusBooking } from "../../constants/app.const";
+import MyDropdownMultiple from "../../components/Common/MyDropdownMultiple";
+import i18n from "../../i18n";
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
+import listPlugin from "@fullcalendar/list";
+import BootstrapTheme from "@fullcalendar/bootstrap";
+import Spinners from "../../components/Common/Spinner";
+import { convertToUtcString, formatDate } from "../../utils/app";
+import QRCodeCheckInScanner from "../../components/Common/QRCodeCheckInScanner";
+import { toast } from "react-toastify";
+import MyDropdownColor from "../../components/Common/MyDropdownColor";
+import { useAppSelector } from "../../hook/store.hook";
+import IcQR from "../../assets/icon/IcQR";
+import { detectBrowser } from "../../utils/app";
+import styled from "styled-components";
+import { useLocation } from "react-router-dom";
+
+const StatusDot = styled.span`
+  height: 8px;
+  width: 8px;
+  background-color: ${(props) => props.color || "gray"};
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 8px;
+`;
+
+const selectBookingType = [
+  { value: 1, label: i18n.t("booking"), color: "#EA580C" },
+  { value: 2, label: i18n.t("booking_pt"), color: "#7c3aed" },
+];
+
+const Booking = (props) => {
+  document.title = "Booking | Actiwell System";
+  const calendarRef = useRef(null);
+
+  const getCalendarApi = () => {
+    return calendarRef?.current?.getApi();
+  };
+  const [booking, setBookings] = useState([]);
+  const [ptBooking, setPtBookings] = useState([]);
+
+  const [data, setData] = useState({
+    locations: [],
+    sources: [],
+  });
+  const [params, setParams] = useState({
+    keyword: "",
+    id: "",
+    locations: [],
+    status: "",
+    source: "",
+    class: "",
+  });
+  const [timeCalendar, setTimeCalendar] = useState({
+    start: moment().format("YYYY-MM-DD"),
+    end: moment().format("YYYY-MM-DD"),
+  });
+  const [startDate, setStartDate] = useState(
+    new Date(timeCalendar.start).toISOString().slice(0, 10)
+  );
+  const [endDate, setEndDate] = useState(
+    new Date(timeCalendar.end).toISOString().slice(0, 10)
+  );
+  const [isLoading, setLoading] = useState(false);
+  const [isChange, setIsChange] = useState(false);
+  const [showCamera, setShowCamera] = useState(false);
+  const isCheckingRef = useRef(false);
+
+  const [eventCounts, setEventCounts] = useState({});
+
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [chainLoad, triggerChainLoad] = useState(false);
+  const [buttonsCopy, setButtonsCopy] = useState("");
+  const rootRef = useRef(null);
+
+  const [displayBooking, setDisplayBooking] = useState(true);
+  const [displayBookingPt, setDisplayBookingPt] = useState(true);
+
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const tabParam = searchParams.get("tab");
+  const [isList, setIsList] = useState(tabParam || "month");
+
+  useEffect(() => {
+    if (tabParam && tabParam !== isList) {
+      setIsList(tabParam);
+    }
+  }, [tabParam]);
+
+  const handleScanCheckIn = async (data) => {
+    if (data && !isCheckingRef.current) {
+      try {
+        isCheckingRef.current = true;
+        const res = await customerService.checkInMember(data);
+        setShowCamera(false);
+        const messageConfig = {
+          check_in_success: {
+            type: "success",
+            text: "Check in thành công",
+          },
+          package_not_found: {
+            type: "info",
+            text: "Gói tập của khách hàng đã hết hạn",
+          },
+          location_not_apply: {
+            type: "info",
+            text: "Gói tập của khách hàng không được áp dụng tại chi nhánh",
+          },
+        };
+        const message = messageConfig[res.data.code];
+        toast[message.type](message.text, {
+          position: "top-right",
+          autoClose: 5000,
+          theme: "light",
+          hideProgressBar: true,
+        });
+        isCheckingRef.current = false;
+      } catch (error) {
+        setShowCamera(false);
+        isCheckingRef.current = false;
+        if (error.message === "expired") {
+          toast.error("QR hết hạn", {
+            position: "top-right",
+            autoClose: 5000,
+            theme: "light",
+            hideProgressBar: true,
+          });
+        } else {
+          toast.error("Check in đã xảy ra lỗi", {
+            position: "top-right",
+            autoClose: 5000,
+            theme: "light",
+            hideProgressBar: true,
+          });
+        }
+      }
+    }
+  };
+
+  const handleCheckInBooking = async (bookingId) => {
+    try {
+      const response = await bookingService.checkInBooking(bookingId);
+      if (response.success) {
+        await handleGetListBooking();
+        toast.success("Check in booking successfully", {
+          position: "top-right",
+          autoClose: 5000,
+          theme: "light",
+          hideProgressBar: true,
+        });
+      }
+    } catch (e) {}
+  };
+  const handleCheckInPtBooking = async (bookingId) => {
+    try {
+      const response = await bookingService.checkInBookingPT(bookingId);
+      if (response.success) {
+        await handleGetListBooking();
+        toast.success("Check in ptBooking successfully", {
+          position: "top-right",
+          autoClose: 5000,
+          theme: "light",
+          hideProgressBar: true,
+        });
+      }
+    } catch (e) {}
+  };
+
+  const handleGetListBooking = async () => {
+    try {
+      setLoading(true);
+      const payload = {
+        ...params,
+        start_date: timeCalendar.start,
+        end_date: timeCalendar.end,
+      };
+
+      // trans form status 5 to empty and confirmed 0 for PT booking
+      if (payload.status && payload.status == 5) {
+        payload.status = "";
+        payload.confirmed = 0;
+      }
+
+      let newId = 1;
+
+      // GET public bookings
+      const res = await bookingService.getListBookingCalendar(payload);
+      const temp = res.data.map((item) => {
+        const itemTemp = {
+          ...item,
+          id: newId,
+          oldId: item.id,
+          resourceId: item?.class?.id,
+          title: `${item?.customer?.last_name} ${item?.customer?.first_name}`,
+          start: convertToUtcString(
+            item?.schedule?.date,
+            item?.schedule?.start_time
+          ),
+          end: convertToUtcString(
+            item?.schedule?.date,
+            item?.schedule?.end_time
+          ),
+          // allDay: true,
+          className:
+            isList === "list"
+              ? "bg-white text-black"
+              : isList === "month"
+              ? "bg-transparent text-black"
+              : `bg-${getStatus(item.status)?.bg} text-black`,
+        };
+        newId = newId + 1;
+        if (isList === "month") {
+          delete itemTemp.end;
+        }
+        return itemTemp;
+      });
+
+      // GET private booking
+      const resPt = await bookingService.getListBookingPTCalendar(payload);
+      const tempPt = resPt.data.map((item) => {
+        const itemTemp = {
+          ...item,
+          id: newId,
+          oldId: item.id,
+          resourceId: item?.class?.id,
+          title: ` ${item?.customer?.last_name} ${item?.customer?.first_name}`,
+          start: convertToUtcString(item?.date, item?.start_time),
+          end: convertToUtcString(item?.date, item?.end_time),
+          // allDay: true,
+          className:
+            isList === "list"
+              ? "bg-white text-black"
+              : isList === "month"
+              ? "bg-transparent text-black"
+              : `bg-${getStatus(item.status)?.bg} text-black`,
+        };
+        newId = newId + 1;
+        if (isList === "month") {
+          delete itemTemp.end;
+        }
+        return itemTemp;
+      });
+      setBookings(temp);
+      setPtBookings(tempPt);
+    } catch (error) {
+      console.log("error:", error);
+    }
+  };
+
+  const bookingList = useMemo(() => {
+    if (
+      (displayBooking && displayBookingPt) ||
+      (!displayBooking && !displayBookingPt)
+    ) {
+      return booking.concat(ptBooking);
+    } else if (displayBooking) {
+      return booking;
+    } else {
+      return ptBooking;
+    }
+  }, [displayBooking, displayBookingPt, booking, ptBooking]);
+
+  useEffect(() => {
+    const counts = {};
+    bookingList.forEach((event) => {
+      const date = new Date(event?.start).toDateString();
+      counts[date] = (counts[date] || 0) + 1;
+    });
+    setEventCounts(counts);
+  }, [bookingList]);
+
+  const getStatus = (status) => {
+    const statusObj = listStatusBooking.find((item) => item.value === status);
+    return statusObj;
+  };
+
+  const handleRedirect = (booking) => {
+    props.router.navigate(
+      `/booking/detail/${booking.oldId}?callback=${isList}`
+    );
+  };
+
+  const handleRedirectPt = (ptBooking) => {
+    props.router.navigate(
+      `/book-by-pt/detail/${ptBooking.oldId}?callback=${isList}`
+    );
+  };
+
+  const handleResetFilter = () => {
+    setParams({
+      keyword: "",
+      id: "",
+      locations: [],
+      status: "",
+      source: "",
+      class: "",
+    });
+  };
+
+  const handleGetLocationForOperator = async () => {
+    try {
+      const response = await operatorService.getListLocationForOperator();
+      if (response.success) {
+        return response.data.map((item) => {
+          return {
+            value: item.id,
+            label: item.name,
+          };
+        });
+      }
+    } catch (e) {}
+  };
+
+  const handleGetSource = async () => {
+    try {
+      const response = await sourceService.getListSource();
+      if (response.success) {
+        return response.data.map((item) => {
+          return {
+            value: item.id,
+            label: item.name,
+          };
+        });
+      }
+    } catch (e) {}
+  };
+
+  const formatTimeRange = (startTime, endTime) => {
+    // Parse the start and end times into Date objects
+    const startDate = new Date(startTime);
+    const endDate = new Date(endTime);
+
+    // Format the times using the 24-hour clock
+    const formattedStartTime = startDate.toLocaleString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+    });
+    const formattedEndTime = endDate.toLocaleString("en-US", {
+      hour: "numeric",
+      minute: "numeric",
+    });
+
+    return `${formattedStartTime} - ${formattedEndTime}`;
+  };
+
+  const convertMinutesToTimeString = (totalMinutes) => {
+    const hours = Math.floor(totalMinutes / 60);
+    const minutes = totalMinutes % 60;
+    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
+      2,
+      "0"
+    )}`;
+  };
+
+  const fetchData = async () => {
+    try {
+      const [sources, locations] = await Promise.all([
+        handleGetSource(),
+        handleGetLocationForOperator(),
+      ]);
+
+      setData({
+        sources: sources,
+        locations: locations,
+      });
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    handleGetListBooking();
+  }, [params, timeCalendar]);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const handleDateClick = (e) => {
+    if (isList === "month") {
+      try {
+        const calendarApi = getCalendarApi();
+        calendarApi.changeView("timeGridDay", e?.dateStr);
+
+        setIsList("day");
+        setIsChange((prev) => !prev);
+        const previousHeaderToolbar = document?.querySelector(
+          ".highlighted-toolbar"
+        );
+        if (previousHeaderToolbar) {
+          previousHeaderToolbar.classList.remove("highlighted-toolbar");
+        }
+        const headerToolbar = document?.querySelector(".fc-dayOfData-button");
+        headerToolbar.classList.add("highlighted-toolbar");
+      } catch (e) {
+        console.log("easd", e);
+      }
+    }
+  };
+  const getCustomVisibleRange = (currentDate) => {
+    return {
+      start: startDate.toISOString().split("T")[0], // YYYY-MM-DD
+      end: endDate.toISOString().split("T")[0],
+    };
+  };
+
+  const qrScannerRef = useRef();
+
+  const openCamera = () => {
+    qrScannerRef.current?.triggerCamera(); // Call the exposed function
+  };
+
+  const customButtons = {
+    listOfData: {
+      text: i18n.t("list"),
+      click: function () {
+        try {
+          const calendarApi = getCalendarApi();
+          calendarApi.changeView("listYear");
+          setIsList("list");
+          const previousHeaderToolbar = document?.querySelector(
+            ".highlighted-toolbar"
+          );
+          if (previousHeaderToolbar) {
+            previousHeaderToolbar.classList.remove("highlighted-toolbar");
+          }
+          const headerToolbar = document?.querySelector(
+            ".fc-listOfData-button"
+          );
+          headerToolbar.classList.add("highlighted-toolbar");
+          setMenuOpen(false);
+          props.router.navigate(`/booking?tab=list`);
+        } catch (e) {
+          console.log("easd", e);
+        }
+      },
+    },
+    monthOfData: {
+      text: i18n.t("months"),
+      click: function () {
+        try {
+          const calendarApi = getCalendarApi();
+          setIsList("month");
+          setIsChange((prev) => !prev);
+          calendarApi.changeView("monthOfData");
+          const previousHeaderToolbar = document?.querySelector(
+            ".highlighted-toolbar"
+          );
+          if (previousHeaderToolbar) {
+            previousHeaderToolbar.classList.remove("highlighted-toolbar");
+          }
+          const headerToolbar = document?.querySelector(
+            ".fc-monthOfData-button"
+          );
+          headerToolbar.classList.add("highlighted-toolbar");
+          setMenuOpen(false);
+          props.router.navigate(`/booking?tab=month`);
+        } catch (e) {
+          console.log("easd", e);
+        }
+      },
+    },
+    weekOfData: {
+      text: i18n.t("weeks"),
+      click: function () {
+        try {
+          const calendarApi = getCalendarApi();
+          calendarApi.changeView("weekOfData");
+          setIsList("week");
+          setIsChange((prev) => !prev);
+          const previousHeaderToolbar = document?.querySelector(
+            ".highlighted-toolbar"
+          );
+          if (previousHeaderToolbar) {
+            previousHeaderToolbar.classList.remove("highlighted-toolbar");
+          }
+
+          const headerToolbar = document?.querySelector(
+            ".fc-weekOfData-button"
+          );
+          headerToolbar.classList.add("highlighted-toolbar");
+          setMenuOpen(false);
+          props.router.navigate(`/booking?tab=week`);
+        } catch (e) {
+          console.log("easd", e);
+        }
+      },
+    },
+    dayOfData: {
+      text: i18n.t("days"),
+      click: function () {
+        try {
+          const calendarApi = getCalendarApi();
+          calendarApi.changeView("dayOfData");
+          setIsList("day");
+          setIsChange((prev) => !prev);
+          const previousHeaderToolbar = document?.querySelector(
+            ".highlighted-toolbar"
+          );
+          if (previousHeaderToolbar) {
+            previousHeaderToolbar.classList.remove("highlighted-toolbar");
+          }
+          const headerToolbar = document?.querySelector(".fc-dayOfData-button");
+          headerToolbar.classList.add("highlighted-toolbar");
+          setMenuOpen(false);
+          props.router.navigate(`/booking?tab=day`);
+        } catch (e) {
+          console.log("easd", e);
+        }
+      },
+    },
+    todayOfData: {
+      text: i18n.t("today"),
+      click: function () {
+        try {
+          const calendarApi = getCalendarApi();
+          calendarApi.today();
+          setIsChange((prev) => !prev);
+        } catch (e) {
+          console.log("easd", e);
+        }
+      },
+    },
+    prevOfData: {
+      text: i18n.t("prev"),
+      click: function () {
+        try {
+          const calendarApi = getCalendarApi();
+          calendarApi.prev();
+          setIsChange((prev) => !prev);
+        } catch (e) {
+          console.log("easd", e);
+        }
+      },
+    },
+    nextOfData: {
+      text: i18n.t("next"),
+      click: function () {
+        try {
+          const calendarApi = getCalendarApi();
+          calendarApi.next();
+          setIsChange((prev) => !prev);
+        } catch (e) {
+          console.log("easd", e);
+        }
+      },
+    },
+    QrScanner: {
+      text: "",
+      click: () => {
+        openCamera();
+      },
+    },
+    AddNewBooking: {
+      text: i18n.t(""),
+      click: () => {},
+    },
+  };
+
+  const { earliest, latest } = useMemo(() => {
+    const sixAM = 6 * 60; // 360 minutes
+    const eightPM = 20 * 60; // 1200 minutes
+
+    if (!bookingList || bookingList.length === 0) {
+      return {
+        earliest: moment()
+          .startOf("day")
+          .add(sixAM, "minutes")
+          .format("HH:mm:ss"),
+        latest: moment()
+          .startOf("day")
+          .add(eightPM, "minutes")
+          .format("HH:mm:ss"),
+      };
+    }
+
+    let min = Infinity;
+    let max = -Infinity;
+
+    bookingList.forEach((b) => {
+      const start = moment(b.start);
+      const end = moment(b.end);
+
+      if (start.isValid()) {
+        const minutes = start.hours() * 60 + start.minutes();
+        if (minutes < min) min = minutes;
+      }
+      if (end.isValid()) {
+        const minutes = end.hours() * 60 + end.minutes();
+        if (minutes > max) max = minutes;
+      }
+    });
+
+    if (min > sixAM) min = sixAM;
+    if (max < eightPM) max = eightPM;
+
+    return {
+      earliest: moment().startOf("day").add(min, "minutes").format("HH:mm:ss"),
+      latest: moment().startOf("day").add(max, "minutes").format("HH:mm:ss"),
+    };
+  }, [bookingList]);
+
+  const reactRootRefQr = useRef(null);
+
+  useEffect(() => {
+    const toolbarEl = document.querySelector(".fc-QrScanner-button");
+
+    if (toolbarEl) {
+      toolbarEl.classList.remove("btn-primary");
+      toolbarEl.classList.add("btn-outline");
+
+      if (!toolbarEl.querySelector("#qr-scanner-button")) {
+        const placeholder = document.createElement("div");
+        placeholder.id = "qr-scanner-button";
+        toolbarEl.innerHTML = "";
+        toolbarEl.appendChild(placeholder);
+
+        // React 18+ rendering
+        reactRootRefQr.current = createRoot(placeholder);
+        reactRootRefQr.current.render(
+          <div className="d-flex align-items-center gap-2">
+            <IcQR color="#2563EB" />
+            <div className="" style={{ lineHeight: "17px" }}>
+              Check in
+            </div>
+          </div>
+        );
+      }
+    }
+  }, []);
+
+  const reactRootRefAdd = useRef(null);
+
+  useEffect(() => {
+    const toolbarEl = document.querySelector(".fc-AddNewBooking-button");
+
+    if (toolbarEl) {
+      toolbarEl.style.all = "unset";
+      const placeholder = document.createElement("div");
+      placeholder.id = "Add-N-B-button";
+      toolbarEl.innerHTML = "";
+      toolbarEl.appendChild(placeholder);
+
+      reactRootRefAdd.current = createRoot(placeholder);
+      reactRootRefAdd.current.render(
+        <a
+          href={`/booking/create?callback=${isList}`}
+          className="btn btn-secondary"
+        >
+          <IcPlus color="white" />
+          <div className="" style={{ lineHeight: "17px" }}>
+            {window.innerWidth <= "660"
+              ? i18n.t("add_new_booking_short")
+              : i18n.t("add_new_booking")}
+          </div>
+        </a>
+      );
+      // }
+    }
+  }, [isList]);
+
+  useEffect(() => {
+    const moreButtons = document.querySelectorAll(".fc-more-link");
+    moreButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        setTimeout(() => {
+          const popup = document.querySelector(".popover-body");
+          if (popup) {
+            const footer = document.querySelector(".footer");
+
+            const buttonBottom = button.getBoundingClientRect().bottom;
+            const pageBottom = document.body.scrollHeight;
+
+            const spaceAvailable = pageBottom - buttonBottom + 100;
+
+            popup.style.maxHeight = spaceAvailable + "px";
+            popup.style.overflowY = "auto";
+            popup.style.display = "block";
+          }
+        }, 100); // Delay enough for the popup to be inserted
+      });
+    });
+  });
+
+  useEffect(() => {
+    const isHasHead = document?.querySelector(".additional-content");
+
+    if (isList === "list" && !isHasHead) {
+      try {
+        // Select the header and content elements
+        const headerEl = document.querySelector(".fc-listYear-view");
+        headerEl.style.marginBottom = "20px";
+
+        const additionBoxEl = document.createElement("div");
+        additionBoxEl.style.display = "flex";
+        additionBoxEl.style.width = "100%";
+        additionBoxEl.classList.add("sticky-additional-content");
+        const additionBoxDot = document.createElement("div");
+        additionBoxDot.style.width = "12px";
+        additionBoxEl.appendChild(additionBoxDot);
+        const additionalContentEl = document.createElement("div");
+
+        // Set styles for the additional content container
+        additionalContentEl.classList.add("additional-content"); // Add a class for easier styling
+        additionalContentEl.style.display = "flex";
+        additionalContentEl.style.padding = "8px 14px"; // Make it a flexbox for easier layout
+        additionalContentEl.style.justifyContent = "space-between";
+        additionalContentEl.style.width = "100%";
+        // Create individual divs for each label
+        const labels = [
+          "schedule",
+          "booking_id",
+          "source",
+          "location",
+          "class_name",
+          "trainer",
+          "customer",
+          "phone",
+          "email",
+          "status",
+          "timestamp",
+          "action",
+        ];
+
+        labels.forEach((label) => {
+          const labelEl = document.createElement("div");
+          labelEl.textContent = i18n.t(label);
+          labelEl.style.textAlign = "left";
+          labelEl.style.overflow = "hidden";
+          labelEl.style.width =
+            label === "email"
+              ? "13.2%"
+              : label === "timestamp"
+              ? "10.4%"
+              : label === "schedule" || label === "trainer"
+              ? "9%"
+              : label === "status" ||
+                label === "booking_id" ||
+                label === "phone"
+              ? "6%"
+              : "8.2%";
+          additionalContentEl.appendChild(labelEl);
+        });
+        const firstChild = headerEl.firstChild;
+
+        // Insert the new element before the first child
+        additionBoxEl.appendChild(additionalContentEl);
+        headerEl.insertBefore(additionBoxEl, firstChild);
+      } catch (e) {
+        console.log("e", e);
+      }
+    }
+  }, [isChange, isList]);
+
+  const [filterOpen, setFilterOpen] = useState(false);
+
+  useEffect(() => {
+    if (isList === "week" || isList === "day") {
+      const classList = [
+        ".fc-day-mon",
+        ".fc-day-tue",
+        ".fc-day-wed",
+        ".fc-day-thu",
+        ".fc-day-fri",
+        ".fc-day-sat",
+        ".fc-day-sun",
+      ];
+      classList.forEach((el) => {
+        const component = document.querySelector(el);
+        let smallWindow = false;
+
+        if (component) {
+          const dateValue = component.getAttribute("data-date");
+          const dateObj = new Date(dateValue);
+          const formattedDate = dateObj.toDateString();
+          const dayAnchor = component.querySelector(
+            "div.fc-scrollgrid-sync-inner"
+          );
+
+          if (window.innerWidth <= "500" && isList === "week") {
+            smallWindow = true;
+          }
+
+          if (dayAnchor) {
+            if (dayAnchor.querySelector(".calendar-badge")) return;
+
+            // Create and append the badge container
+            const badgeContainer = document.createElement("span");
+            badgeContainer.className = "calendar-badge";
+            if (!smallWindow) badgeContainer.style.marginLeft = "8px";
+            dayAnchor.appendChild(badgeContainer);
+
+            const root = createRoot(badgeContainer);
+            root.render(
+              <span
+                className="fc-col-header-badge"
+                style={{
+                  backgroundColor: "#7c3aed",
+                  color: "white",
+                  borderRadius: "9999px",
+                  padding: "2px 6px",
+                  fontSize: "0.8em",
+                  textAlign: "center",
+                }}
+              >
+                {eventCounts[formattedDate] || 0}
+              </span>
+            );
+          }
+        }
+      });
+    }
+  }, [eventCounts]);
+
+  useEffect(() => {
+    const isMobile = window.innerWidth < 725;
+    if (!isMobile || !chainLoad) return;
+
+    const secondDiv = document.querySelector(
+      ".fc-header-toolbar .fc-toolbar-chunk:nth-of-type(2)"
+    );
+    if (!secondDiv) return;
+
+    if (!rootRef.current) {
+      rootRef.current = createRoot(secondDiv);
+    }
+
+    const newDiv = document.createElement("div");
+    buttonsCopy.forEach((el) => {
+      newDiv.appendChild(el.cloneNode(true));
+    });
+
+    const preloadButtons = () => {
+      const container = document.getElementById("button-container-mob");
+      if (container) {
+        container.innerHTML = "";
+        buttonsCopy.forEach((btn) => {
+          const cloneBtn = btn;
+          cloneBtn.style.display = "block";
+          container.appendChild(cloneBtn);
+        });
+      }
+    };
+
+    preloadButtons();
+
+    rootRef.current.render(
+      <div
+        style={{ position: "relative", display: "inline-block", margin: "0" }}
+      >
+        <button
+          className="btn-mob-menu gap-2"
+          onClick={() => {
+            preloadButtons();
+            setMenuOpen((prev) => !prev);
+          }}
+        >
+          <i className="fa fa-bars"></i> {i18n.t("view")}
+        </button>
+
+        <div
+          className="button-wrapper-mob"
+          style={menuOpen ? { display: "block" } : { display: "none" }}
+        >
+          <div id="button-container-mob" />
+        </div>
+      </div>
+    );
+  }, [menuOpen, chainLoad]);
+
+  const updateToolbar = useCallback(() => {
+    setMenuOpen(false);
+    const secondDiv = document.querySelector(
+      ".fc-header-toolbar .fc-toolbar-chunk:nth-of-type(2)"
+    );
+    if (!secondDiv) return;
+
+    triggerChainLoad(chainLoad + 1);
+
+    const buttons = secondDiv.querySelectorAll(".btn");
+    if (!buttonsCopy && buttons) setButtonsCopy(buttons);
+
+    const isMobile = window.innerWidth < 725;
+
+    if (!isMobile) {
+      secondDiv.classList.add("view-switcher");
+      buttons.forEach((b) => {
+        b.classList.remove("btn");
+        b.classList.remove("btn-primary");
+        b.classList.add("view-btn");
+        b.style.margin = "0rem";
+      });
+    } else {
+      buttons.forEach((b) => {
+        b.style.display = "none";
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (window.innerWidth >= 725) {
+      const secondDiv = document.querySelector(
+        ".fc-header-toolbar .fc-toolbar-chunk:nth-of-type(2)"
+      );
+      if (secondDiv === null) return;
+      secondDiv.classList.add("view-switcher");
+      const buttons = secondDiv.querySelectorAll(".btn");
+      buttons.forEach((b) => {
+        b.classList.remove("btn");
+        b.classList.remove("btn-primary");
+        b.classList.add("view-btn");
+        b.style.margin = "0rem";
+      });
+    }
+  }, [isList]);
+
+  const handleSetSource = useCallback(
+    (e) => setParams((prevParams) => ({ ...prevParams, source: e })),
+    []
+  );
+  const handleSetStatus = useCallback(
+    (e) => setParams((prevParams) => ({ ...prevParams, status: e })),
+    []
+  );
+  const handleSetLocations = useCallback(
+    (selected) => setParams((prev) => ({ ...prev, locations: selected })),
+    []
+  );
+  const handleSetStartDate = useCallback(
+    (e) => setStartDate(e.target.value),
+    []
+  );
+  const handleSetEndDate = useCallback((e) => setEndDate(e.target.value), []);
+  const handleSearch = useCallback(
+    (e) => setParams((prev) => ({ ...prev, keyword: e })),
+    []
+  );
+
+  const [loadListButton, setLoadListButton] = useState(0);
+  useEffect(() => {
+    if (tabParam === "list") {
+      const headerToolbar = document?.querySelector(".fc-listOfData-button");
+      if (!headerToolbar) {
+        setLoadListButton((prev) => prev + 1);
+        return;
+      }
+      headerToolbar.classList.add("highlighted-toolbar");
+    }
+  }, [tabParam, loadListButton]);
+
+  return (
+    <React.Fragment>
+      <div
+        className={"page-content content-container " + detectBrowser()}
+        style={{ padding: "0" }}
+      >
+        <Breadcrumb title={i18n.t("booking")} />
+        <div className="page-container">
+          <div className="p-0">
+            <div className="filter-container" style={{ marginBottom: "0" }}>
+              <div className="filter-header">
+                <div
+                  className="filter-title-group"
+                  onClick={() => setFilterOpen(!filterOpen)}
+                >
+                  <button className="filter-clear">
+                    {filterOpen ? (
+                      <i className="fa fa-chevron-right" />
+                    ) : (
+                      <i className="fa fa-chevron-down" />
+                    )}
+                  </button>
+                  <h5 className="filter-title">{i18n.t("all_bookings")}</h5>
+                </div>
+                {window.innerWidth >= "800" && (
+                  <>
+                    <div
+                      className=""
+                      style={{
+                        display: "flex",
+                        width: "auto",
+                        marginRight: "0.5rem",
+                        alignItems: "right",
+                      }}
+                    >
+                      <div
+                        className="btn btn-outline-warning"
+                        style={{ marginRight: "0.5rem" }}
+                        onClick={() => {
+                          setDisplayBooking((prev) => !prev);
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          name="booking"
+                          id="public"
+                          checked={displayBooking}
+                        />
+                        {i18n.t("group_booking")}
+                      </div>
+                      <div
+                        className="btn btn-outline-purple"
+                        onClick={() => {
+                          setDisplayBookingPt((prev) => !prev);
+                        }}
+                      >
+                        <input
+                          type="checkbox"
+                          name="booking"
+                          id="private"
+                          checked={displayBookingPt}
+                        />
+                        {i18n.t("booking_pt")}
+                      </div>
+                    </div>
+                    <div
+                      className=""
+                      style={{
+                        minWidth: "180px",
+                        marginRight: "0.5rem",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <MyDropdownMultiple
+                        options={data.locations}
+                        placeholder={i18n.t("location")}
+                        selected={params.locations}
+                        setSelected={handleSetLocations}
+                        displayEmpty={true}
+                      />
+                    </div>
+                  </>
+                )}
+                <button className="filter-reset" onClick={handleResetFilter}>
+                  {i18n.t("reset")}
+                </button>
+              </div>
+              <Collapse isOpen={filterOpen} className="filter-grid">
+                {window.innerWidth < "800" && (
+                  <div className="filter-group">
+                    <label htmlFor="booking-type">
+                      {i18n.t("booking_type")}
+                    </label>
+                    <div>
+                      <div
+                        className=""
+                        style={{
+                          display: "flex",
+                          width: "auto",
+                          marginRight: "0.5rem",
+                          alignItems: "right",
+                        }}
+                      >
+                        <div
+                          className="btn btn-outline-warning"
+                          style={{ marginRight: "0.5rem" }}
+                          onClick={() => {
+                            setDisplayBooking((prev) => !prev);
+                          }}
+                        >
+                          <input
+                            type="checkbox"
+                            name="booking"
+                            id="public"
+                            checked={displayBooking}
+                          />
+                          {i18n.t("group_booking")}
+                        </div>
+                        <div
+                          className="btn btn-outline-purple"
+                          onClick={() => {
+                            setDisplayBookingPt((prev) => !prev);
+                          }}
+                        >
+                          <input
+                            type="checkbox"
+                            name="booking"
+                            id="private"
+                            checked={displayBookingPt}
+                          />
+                          {i18n.t("booking_pt")}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )}
+                <div className="filter-group">
+                  <label className="filter-label">{`${i18n.t("email")}/${i18n.t(
+                    "phone"
+                  )}/${i18n.t("name")}`}</label>
+                  <InputSearch
+                    value={params.keyword}
+                    onChange={handleSearch}
+                    placeholder={`${i18n.t("email")}/${i18n.t(
+                      "phone"
+                    )}/${i18n.t("name")}`}
+                  />
+                </div>
+                {window.innerWidth < "800" && (
+                  <div className="filter-group">
+                    <label className="filter-label">{i18n.t("location")}</label>
+                    <MyDropdownMultiple
+                      options={data.locations}
+                      placeholder={i18n.t("location")}
+                      selected={params.locations}
+                      setSelected={handleSetLocations}
+                      displayEmpty={true}
+                    />
+                  </div>
+                )}
+                <div className="filter-group">
+                  <label className="filter-label">{i18n.t("status")}</label>
+                  <MyDropdownColor
+                    options={listStatusBooking}
+                    selected={params.status}
+                    displayEmpty={true}
+                    setSelected={handleSetStatus}
+                    placeholder={i18n.t("status")}
+                  />
+                </div>
+                <div className="filter-group">
+                  <label className="filter-label">{i18n.t("source")}</label>
+                  <MyDropdown
+                    options={data.sources}
+                    selected={params.source}
+                    displayEmpty={true}
+                    setSelected={handleSetSource}
+                    placeholder={i18n.t("source")}
+                  />
+                </div>
+                <div className="filter-group">
+                  <label className="filter-label">{i18n.t("start_date")}</label>
+                  <Input
+                    className="filter-select"
+                    type="date"
+                    value={startDate}
+                    onChange={handleSetStartDate}
+                  />
+                </div>
+                <div className="filter-group">
+                  <label className="filter-label">{i18n.t("end_date")}</label>
+                  <Input
+                    className="filter-select"
+                    type="date"
+                    value={endDate}
+                    onChange={handleSetEndDate}
+                  />
+                </div>
+              </Collapse>
+            </div>
+            <div>
+              <QRCodeCheckInScanner
+                onResult={handleScanCheckIn}
+                showCamera={showCamera}
+                setShowCamera={setShowCamera}
+                ref={qrScannerRef}
+                hide={true}
+              />
+            </div>
+            <div
+              style={{
+                position: "relative",
+                padding: "6px",
+              }}
+            >
+              {isLoading && (
+                <div
+                  style={{
+                    position: "absolute",
+                    backgroundColor: "#fff",
+                    top: 0,
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    zIndex: 999999,
+                  }}
+                >
+                  <Spinners setLoading={setLoading} />
+                </div>
+              )}
+              <FullCalendar
+                ref={calendarRef}
+                plugins={[
+                  BootstrapTheme,
+                  dayGridPlugin,
+                  timeGridPlugin,
+                  interactionPlugin,
+                  listPlugin,
+                ]}
+                locale={i18n.language === "vi" ? "vi" : "en"}
+                locales={allLocales}
+                height={"auto"}
+                // eventLimit={2}
+                slotMinTime={earliest}
+                slotMaxTime={latest}
+                dayMaxEventRows={3}
+                dayHeaderFormat={{
+                  weekday: window.innerWidth >= "576" ? "long" : "short",
+                }}
+                firstDay={1}
+                viewDidMount={updateToolbar}
+                allDaySlot={false}
+                dayCellContent={(arg) => {
+                  const day = new Date(arg.date).toDateString();
+                  const evnCount = eventCounts[day] || 0;
+                  if (isList === "month") {
+                    return (
+                      <div style={{ fontWeight: 700 }}>
+                        <p style={{ margin: "0rem" }}>{arg.dayNumberText}</p>
+                      </div>
+                    );
+                  }
+                }}
+                initialView={
+                  isList === "list"
+                    ? "listYear"
+                    : isList === "week"
+                    ? "weekOfData"
+                    : isList === "day"
+                    ? "dayOfData"
+                    : "monthOfData"
+                }
+                headerToolbar={{
+                  start: "prevOfData,title,nextOfData todayOfData",
+                  center: "monthOfData weekOfData dayOfData listOfData",
+                  end: "AddNewBooking QrScanner",
+                }}
+                dateClick={(e) => handleDateClick(e)}
+                views={{
+                  listOfData: {
+                    type: "list", // Base type is 'list'
+                    duration: {
+                      days:
+                        (new Date(endDate).getTime() -
+                          new Date(startDate).getTime()) /
+                          (1000 * 60 * 60 * 24) +
+                        1,
+                    }, // Calculate duration in days
+                    // OR, more robustly, use visibleRange function:
+                    visibleRange: getCustomVisibleRange,
+                    buttonText: "List",
+                  },
+                  monthOfData: {
+                    type: "dayGridMonth",
+                    buttonText: "Month",
+                  },
+                  weekOfData: {
+                    type: "timeGridWeek",
+                    duration: { days: 7 },
+                    buttonText: "Week",
+                  },
+                  dayOfData: {
+                    type: "timeGridDay",
+                    buttonText: "Day",
+                  },
+                  todayOfData: {
+                    type: "today",
+                    buttonText: "Today",
+                  },
+                  prevOfData: {
+                    type: "prev",
+                    buttonText: "Prev",
+                  },
+                  nextOfData: {
+                    type: "next",
+                    buttonText: "Next",
+                  },
+                }}
+                customButtons={customButtons}
+                moreLinkClick={(info) => {
+                  setTimeout(() => {
+                    const popover = document.querySelector(".fc-popover");
+                    if (popover) {
+                      const cell =
+                        info.jsEvent.target.closest(".fc-daygrid-day");
+                      if (cell) {
+                        const cellWidth = cell.offsetWidth;
+                        if (cellWidth > 200) {
+                          popover.style.width = cellWidth + "px";
+                        }
+                      }
+                    }
+                  }, 0);
+                  return "popover";
+                }}
+                themeSystem="bootstrap"
+                datesSet={(arg) => {
+                  const start = arg.startStr.slice(0, 10);
+                  const end = arg.endStr.slice(0, 10);
+
+                  setTimeCalendar({ start, end });
+                  setStartDate(start);
+                  setEndDate(end);
+                }}
+                displayEventTime={false}
+                // Event list
+                events={bookingList}
+                // Event display
+                eventContent={(eventInfo) => {
+                  const bookingItem = bookingList?.find(
+                    (child) =>
+                      child.id.toString() === eventInfo.event.id.toString()
+                  );
+                  if (!bookingItem) {
+                    return <div></div>;
+                  }
+                  const status = getStatus(bookingItem?.status);
+
+                  if (isList === "month") {
+                    return (
+                      <div
+                        className="container-item-calendar"
+                        style={{
+                          backgroundColor: !bookingItem.class
+                            ? "#7c3aed"
+                            : "#EA580C",
+                        }}
+                        onClick={() => {
+                          bookingItem.class
+                            ? handleRedirect(bookingItem)
+                            : handleRedirectPt(bookingItem);
+                        }}
+                      >
+                        <div
+                          className="item-calendar"
+                          style={{
+                            backgroundColor: status?.color,
+                            wordBreak: "break-all",
+                            justifyContent: "space-between",
+                            width: "100%",
+                          }}
+                        >
+                          <div
+                            style={{
+                              wordBreak: "break-word",
+                              marginLeft: "5px",
+                            }}
+                          >
+                            {convertMinutesToTimeString(
+                              bookingItem.class
+                                ? bookingItem.schedule.start_time
+                                : bookingItem.start_time
+                            )}
+                            <br />
+                            {eventInfo.event.title}
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  }
+                  if (isList != "list") {
+                    return (
+                      <div
+                        className="item-calendar"
+                        style={{
+                          backgroundColor: status?.color,
+                        }}
+                        onClick={() => {
+                          bookingItem.class
+                            ? handleRedirect(bookingItem)
+                            : handleRedirectPt(bookingItem);
+                        }}
+                      >
+                        <div
+                          style={{
+                            wordBreak: "keep-all",
+                            whiteSpace: "nowrap",
+                            overflow: "hidden",
+                          }}
+                        >
+                          {eventInfo.event.title} <br />
+                          {bookingItem.class ? bookingItem.class.name : ""}{" "}
+                          {bookingItem.class && <br />}
+                          {bookingItem.staff.last_name +
+                            " " +
+                            bookingItem.staff.first_name}{" "}
+                          <br />
+                          <StatusDot
+                            color={!bookingItem.class ? "#7c3aed" : "#EA580C"}
+                          />
+                        </div>
+                      </div>
+                    );
+                  }
+                  const created_date = new Date(bookingItem.created_at);
+                  return (
+                    <div
+                      style={{
+                        backgroundColor: "#fff",
+                        width: "100%",
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
+                      onClick={() => {
+                        bookingItem.class
+                          ? handleRedirect(bookingItem)
+                          : handleRedirectPt(bookingItem);
+                      }}
+                    >
+                      <div
+                        className="over-flow-hidden"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          width: "9%",
+                          justifyContent: "left",
+                          wordBreak: "break-word",
+                        }}
+                      >
+                        {formatTimeRange(
+                          eventInfo.event.startStr,
+                          eventInfo.event.endStr
+                        )}
+                      </div>
+                      <div
+                        className="over-flow-hidden"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          width: "6%",
+                          justifyContent: "left",
+                        }}
+                      >
+                        {bookingItem.booking_number}
+                      </div>
+
+                      <div
+                        className="over-flow-hidden"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          width: "8.2%",
+                          justifyContent: "left",
+                        }}
+                      >
+                        {bookingItem.source.name}
+                      </div>
+                      <div
+                        className="over-flow-hidden"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          width: "8.2%",
+                          justifyContent: "left",
+                          wordBreak: "break-word",
+                        }}
+                      >
+                        {bookingItem.location.name}
+                      </div>
+                      <div
+                        className="over-flow-hidden"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          width: "8.2%",
+                          justifyContent: "left",
+                          color: bookingItem.class ? "black" : "red",
+                          wordBreak: "break-word",
+                        }}
+                      >
+                        {bookingItem.class
+                          ? bookingItem.class.name
+                          : i18n.t("private")}
+                      </div>
+
+                      <div
+                        className="over-flow-hidden"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          width: "9%",
+                          justifyContent: "left",
+                          wordBreak: "break-word",
+                        }}
+                      >
+                        {`${bookingItem.staff.last_name} ${bookingItem.staff.first_name}`}
+                      </div>
+                      <div
+                        className="over-flow-hidden"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          width: "8.2%",
+                          justifyContent: "left",
+                          wordBreak: "break-word",
+                        }}
+                      >
+                        {`${bookingItem.customer.last_name} ${bookingItem.customer.first_name}`}
+                      </div>
+                      <div
+                        className="over-flow-hidden"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          width: "6%",
+                          justifyContent: "left",
+                        }}
+                      >
+                        {bookingItem.customer.phone}
+                      </div>
+                      <div
+                        className="over-flow-hidden"
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          width: "13.2%",
+                          justifyContent: "left",
+                          wordBreak: "break-all",
+                        }}
+                      >
+                        {bookingItem.customer.email}
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "left",
+                          width: "6%",
+                        }}
+                      >
+                        <Badge
+                          color="none"
+                          className={"badge-" + status?.badge}
+                        >
+                          {status?.label}
+                        </Badge>
+                      </div>
+                      <div
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          justifyContent: "left",
+                          width: "10.4%",
+                        }}
+                      >
+                        {bookingItem.cancelled_at
+                          ? bookingItem.cancelled_at
+                          : created_date.getFullYear() +
+                            "-" +
+                            String(created_date.getMonth() + 1).padStart(
+                              2,
+                              "0"
+                            ) +
+                            "-" +
+                            String(created_date.getDate()).padStart(2, "0") +
+                            " " +
+                            String(created_date.getHours()).padStart(2, "0") +
+                            ":" +
+                            String(created_date.getMinutes()).padStart(2, "0") +
+                            ":" +
+                            String(created_date.getSeconds()).padStart(2, "0")}
+                      </div>
+                      <div style={{ width: "8.2%", justifyContent: "left" }}>
+                        <div
+                          className="over-flow-hidden table"
+                          style={{
+                            display:
+                              bookingItem?.status === 0 &&
+                              bookingItem?.check_in === 1
+                                ? "flex"
+                                : "none",
+                            margin: 0,
+                            justifyContent: "left",
+                          }}
+                        >
+                          <Button
+                            color="success"
+                            className="my-1"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              if (bookingItem.class) {
+                                handleCheckInBooking(bookingItem.id);
+                              } else {
+                                handleCheckInPtBooking(bookingItem.id);
+                              }
+                            }}
+                          >
+                            {i18n.t("check_in")}
+                          </Button>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                }}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </React.Fragment>
+  );
+};
+Booking.propTypes = {
+  history: PropTypes.object,
+  type: PropTypes.string,
+};
+export default withRouter(Booking);

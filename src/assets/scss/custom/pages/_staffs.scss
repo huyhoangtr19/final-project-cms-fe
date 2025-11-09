@@ -1,0 +1,224 @@
+.staff-row {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: $space-8;
+    margin-top: $space-2;
+}
+
+.staff-column {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.staff-dob {
+    width: 80%
+}
+
+.staff-age {
+    width: 20%
+}
+
+.staff-label {
+    margin: $space-2 0 $space-1 !important;
+    font-size: $text-base;
+    color: $actiwell-navy;
+    font-weight: $font-medium;
+}
+
+.staff-trainer-label {
+    margin: 0 !important;
+    font-size: $text-base;
+    color: $actiwell-navy;
+    font-weight: $font-medium;
+}
+
+.staff-trainer {
+    width: 33%;
+    margin-left: $space-3;
+}
+
+.staff-multiloc {
+    width: 67%;
+    margin-left: $space-3;
+
+}
+
+.staff-detail-item-small {
+    margin-bottom: 3px;
+}
+
+.staff-detail-item-checkbox {
+    margin: 45px 0 10px 0;
+}
+
+.staff-items-container {
+    display: flex;
+    flex-direction: row;
+    gap: $space-3;
+}
+
+.staff-name {
+    font-size: $text-lg;
+    margin: 0;
+}
+
+.staff-policies-sections-container {
+    display: flex;
+    flex-direction: column;
+    gap: $space-6;
+}
+
+.staff-policies-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.staff-policies-header {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+    margin-bottom: $space-3;
+}
+
+.staff-policies-body {
+    @mixin grid {
+        display: grid;
+        gap: $space-3;
+        row-gap: $space-2;
+    }
+
+    &.before {
+        @include grid;
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    &.after {
+        @include grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    &.tiers {
+        display: flex;
+        gap: $space-3;
+    }
+}
+
+.staff-policies-tiers {
+    display: flex;
+    flex-direction: column;
+    gap: $space-2;
+    padding: $space-2;
+    border: 1px solid $color-gray-200;
+    border-radius: $radius-md;
+    box-shadow: $shadow-sm;
+    flex: 1;
+}
+
+.staff-policies-tier {
+    display: flex;
+    flex-direction: column;
+    gap: $space-3;
+}
+
+.staff-policies-names {
+    display: flex;
+    flex-direction: column;
+}
+
+.staff-policies-tier-title {
+    color: $actiwell-navy;
+    font-size: $text-base;
+    margin-bottom: $space-1;
+}
+
+.staff-policies-tier-policy {
+    color: $color-gray-400;
+    font-size: $text-sm;
+    margin-bottom: 0;
+}
+
+.staff-policies-tier-gains {
+    display: flex;
+    align-items: baseline;
+    gap: $space-2;
+}
+
+.staff-policies-tier-gain {
+    margin-bottom: 0;
+    font-size: $text-base;
+
+    &.highlight {
+        color: $color-success;
+    }
+}
+
+.staff-policies-separator {
+    margin: 0;
+    border: 1px solid $color-gray-200;
+    background-color: $color-gray-200;
+}
+
+@media screen and (max-width: $bp-phone) {
+    .staff-detail-item-checkbox {
+        margin: $space-3 0 0 0 !important;
+    }
+
+    .staff-row {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .staff-name {
+        font-size: $text-base;
+    }
+
+    .staff-policies-body {
+
+        &.before,
+        &.after {
+            grid-template-columns: repeat(1, 1fr);
+        }
+
+        &.tiers {
+            flex-direction: column;
+            gap: $space-2;
+        }
+    }
+
+    .staff-policies-tier-title {
+        font-size: $text-sm;
+    }
+
+    .staff-policies-tier-policy {
+        font-size: $text-xs;
+    }
+
+    .staff-policies-tier-gain {
+        font-size: $text-sm;
+
+        &.highlight {
+            color: $color-success;
+        }
+    }
+}
+
+@media screen and (max-width: 810px) {
+    .staff-detail-item-checkbox {
+        margin: 33px 0 0px 0;
+    }
+
+    .staff-items-container {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .staff-trainer {
+        width: 100%;
+    }
+
+    .staff-multiloc {
+        width: 100%;
+    }
+}

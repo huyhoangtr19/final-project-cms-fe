@@ -1,0 +1,152 @@
+// 
+// _table.scss
+// 
+
+.before-table {
+  position: sticky;
+  top: -$space-3;
+  height: $space-6;
+  width: 100%;
+  background-color: $color-white;
+  z-index: 2;
+}
+
+/* Tables - Enhanced for better readability */
+.table-container {
+  display: block;
+  position: relative;
+  background-color: $color-white;
+  border-radius: $radius-xl;
+  border: 1px solid $color-gray-200;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: $font-family-primary;
+  border-radius: inherit;
+  min-width: max-content;
+  table-layout: auto;
+}
+
+.table thead {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+}
+
+.table thead th {
+  position: sticky;
+  top: 0;
+  color: $actiwell-cream;
+  background-color: $actiwell-navy;
+  padding: $space-2;
+  text-align: left;
+  font-size: $text-base;
+  font-weight: $font-semibold;
+  letter-spacing: 0.01em;
+  z-index: 3;
+
+  &:first-child {
+    border-top-left-radius: $radius-xl;
+  }
+
+  &:last-child {
+    border-top-right-radius: $radius-xl;
+  }
+}
+
+.table td {
+  padding: $space-2;
+  border-bottom: 1px solid $color-gray-100;
+  font-size: $text-base;
+  color: $color-gray-900;
+  vertical-align: middle;
+  background-color: inherit;
+}
+
+.table tr:hover {
+  background-color: rgba(58, 59, 92, 0.02) !important;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.table .btn {
+  padding: $space-1 $space-2;
+}
+
+.table .badge {
+  padding: $space-1 $space-2;
+}
+
+.tabs-container {
+  .before-table {
+    top: 0;
+  }
+
+  .table thead {
+    top: $space-3;
+  }
+}
+
+.table-CR {
+  margin-top: -$space-6 !important;
+}
+
+.table-dashboard {
+  thead, th {
+    position: relative;
+    z-index: 1;
+    top: 0 !important;
+  }
+
+  td {
+    font-weight: $font-semibold;
+  }
+
+  .indication {
+    font-size: $text-sm;
+    font-weight: $font-normal;
+    color: $color-gray-500;
+  }
+
+  .indication-success {
+    color: $color-success;
+  }
+
+  .indication-warning {
+    color: $color-warning;
+  }
+
+  .indication-error {
+    color: $color-error;
+  }
+}
+
+@media screen and (max-width: $bp-phone) {
+  .table-container {
+    border-radius: $radius-md;
+  }
+
+  .table thead th {
+    padding: $space-1 $space-2;
+    font-size: $text-sm;
+
+    &:first-child {
+      border-top-left-radius: $radius-md;
+    }
+
+    &:last-child {
+      border-top-right-radius: $radius-md;
+    }
+  }
+
+  .table td {
+    padding: $space-1 $space-2;
+    font-size: $text-sm;
+  }
+}

@@ -1,0 +1,64 @@
+.package-item-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $space-2;
+    background-color: rgba($color-info-light, 0.2);
+    border: 1px solid $color-gray-200;
+    border-radius: $radius-lg;
+}
+
+.package-item-title {
+    font-size: $text-lg;
+    font-weight: $font-semibold;
+    margin-bottom: $space-1;
+    word-break: break-all;
+    color: $actiwell-navy;
+}
+
+.package-item-infos-container {
+    display: flex;
+    flex: 1;
+    align-items: center;
+}
+
+.package-item-infos {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.package-item-price {
+    font-size: $text-base;
+    font-weight: $font-semibold;
+    margin: 0;
+}
+
+.package-item-info {
+    margin: 0;
+    color: $color-gray-500;
+}
+
+.package-item-close {
+    cursor: pointer;
+    margin-left: $space-3;
+}
+
+@media screen and (max-width: $bp-phone) {
+    .package-item-container {
+        align-items: flex-start;
+    }
+
+    .package-item-infos-container {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .package-item-title, .package-item-price {
+        font-size: $text-sm;
+    }
+
+    .package-item-info {
+        font-size: $text-xs;
+    }
+}

@@ -1,0 +1,14 @@
+.checkbox-input {
+    border: 2px solid $color-gray-300;
+    border-radius: $radius-lg;
+    padding: $space-1;
+    flex: 1;
+    text-align: center;
+    width: 100%;
+}
+
+.checkbox-input-checked {
+    background-color: rgba($color-info-light, 0.3);
+    border-color: $actiwell-navy;
+    border-radius: $radius-lg;
+}

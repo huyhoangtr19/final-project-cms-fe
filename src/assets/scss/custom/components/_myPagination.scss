@@ -1,0 +1,22 @@
+.my-pagination {
+    flex-direction: column;
+    justify-content: flex-end;
+    margin-top: $space-3;
+}
+
+.pagination-total-record {
+    display: flex;
+    justify-content: flex-end;
+    margin-right: $space-1;
+}
+
+.active .page-link {
+    z-index: 2 !important;
+}
+
+@media (max-width: $bp-phone) {
+    .pagination .page-link {
+        font-size: $text-sm;
+        padding: $space-1 $space-2;
+    }
+}

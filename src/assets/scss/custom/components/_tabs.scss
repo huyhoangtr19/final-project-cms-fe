@@ -1,0 +1,85 @@
+//
+// _tabs.scss
+//
+
+/* Tabs Component */
+.tabs-container {
+    background: $color-white;
+    border-radius: $radius-xl;
+    box-shadow: $shadow-sm;
+    border: 1px solid $color-gray-200;
+    overflow-y: auto;
+    height: calc(100dvh - $header-height - 2*$space-2);
+}
+
+.tabs-header {
+    display: flex;
+    align-items: center;
+    background: $color-white;
+    border-bottom: 1px solid $color-gray-200;
+}
+
+.tabs-header-sticky {
+    position: sticky;
+    top: 0;
+    z-index: 3;
+}
+
+.tab-item {
+    width: max-content;
+    padding: $space-3 $space-5;
+    font-family: $font-family-primary;
+    font-size: $text-sm;
+    font-weight: $font-medium;
+    color: $color-gray-600;
+    background: transparent;
+    border: none;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+    transition: all $transition-fast;
+    position: relative;
+    white-space: nowrap;
+
+    &:hover {
+        color: $actiwell-navy;
+        background: rgba(58, 59, 92, 0.05);
+    }
+
+    &.active {
+        color: $actiwell-navy;
+        background: $color-white;
+        border-bottom-color: $actiwell-red;
+        font-weight: $font-semibold;
+    }
+}
+
+.tab-content {
+    display: block;
+    padding: $space-3;
+    width: 100%;
+}
+
+.tab-badge {
+    background: $actiwell-red;
+    color: $actiwell-cream;
+    font-size: $text-xs;
+    padding: $space-1 $space-2;
+    border-radius: $radius-full;
+    margin-left: $space-2;
+    min-width: 20px;
+    text-align: center;
+}
+
+@media screen and (max-width: $bp-phone) {
+    .tabs-container {
+        border-radius: $radius-md;
+    }
+
+    .tabs-header {
+        overflow-x: auto;
+    }
+
+    .tab-item {
+        padding: $space-2 $space-3;
+    }
+}

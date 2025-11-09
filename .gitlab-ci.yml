@@ -1,0 +1,76 @@
+# GitLab CI/CD Configuration for GitLab Pages (Staging Environment)
+image: node:18
+
+# Auto cleanup old pipelines (keep last 10)
+variables:
+  GIT_CLEAN_FLAGS: -ffdx
+  GIT_CHECKOUT: "true"
+
+stages:
+  - build
+  - test
+  - deploy
+
+# Cache node_modules for faster builds
+cache:
+  paths:
+    - node_modules/
+
+# Build for GitLab Pages (Staging)
+build:
+  stage: build
+  script:
+    - npm ci --legacy-peer-deps
+    - export VITE_APP_BASE_URL=https://dev-cms.actiwell.co/api
+    - export VITE_PORT=3000
+    - export NODE_OPTIONS="--max-old-space-size=4096"
+    - export CI=true
+    - export NODE_ENV=staging
+    - npm run build
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 hour
+  rules:
+    # Build only on commits to develop branch (for deployment)
+    - if: $CI_COMMIT_BRANCH == "develop" && $CI_PIPELINE_SOURCE == "push"
+      when: always
+    - when: never
+
+# Test build for merge requests (no deployment)
+test_build:
+  stage: test
+  script:
+    - npm ci --legacy-peer-deps
+    - export VITE_APP_BASE_URL=https://dev-cms.actiwell.co/api
+    - export VITE_PORT=3000
+    - export NODE_OPTIONS="--max-old-space-size=4096"
+    - export CI=true
+    - export NODE_ENV=staging
+    - npm run build
+    - echo "Build test completed successfully"
+  rules:
+    # Test build only on merge requests to develop branch
+    - if: $CI_MERGE_REQUEST_TARGET_BRANCH_NAME == "develop" && $CI_PIPELINE_SOURCE == "merge_request_event"
+      when: always
+    - when: never
+
+# Deploy to GitLab Pages (Staging)
+pages:
+  stage: deploy
+  script:
+    - echo "Deploying to GitLab Pages"
+    - rm -rf public
+    - mkdir public
+    - cp -r dist/* public/
+    - ls -la public/
+  artifacts:
+    paths:
+      - public/
+  rules:
+    # Deploy only on commits to develop branch (not on merge requests)
+    - if: $CI_COMMIT_BRANCH == "develop" && $CI_PIPELINE_SOURCE == "push"
+      when: always
+    - when: never
+  dependencies:
+    - build

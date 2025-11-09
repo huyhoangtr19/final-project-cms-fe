@@ -1,0 +1,87 @@
+.tier-card-container {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    gap: $space-3;
+    padding: $space-2;
+    border: 1px solid $color-gray-200;
+    border-radius: $radius-lg;
+
+    .global-inputs {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: $space-3;
+        row-gap: $space-2;
+    }
+
+    .details-container {
+        display: flex;
+        gap: $space-3;
+
+        .details {
+            flex: 1;
+            padding: $space-2;
+            border: 2px solid $color-gray-200;
+            border-radius: $radius-lg;
+            background-color: $color-gray-100;
+    
+            &:hover {
+                border-color: $color-info;
+            }
+            
+            &.active {
+                border-color: $color-info;
+                background-color: rgba($color-info-light, 0.3);
+            }
+    
+            .title {
+                font-size: $text-base;
+                margin-bottom: $space-4;
+            }
+        }
+    }
+
+    .delete {
+        display: flex;
+        position: absolute;
+        top: $space-2;
+        right: $space-2;
+        justify-content: center;
+        align-items: center;
+        width: 1.7rem;
+        height: 1.7rem;
+        padding: $space-2;
+        background-color: rgba($color-error, 0.15);
+        border-radius: $radius-sm;
+        transition: all $transition-fast;
+
+        &:hover {
+            background-color: $color-error;
+            color: $actiwell-cream;
+        }
+    }
+}
+
+@media screen and (max-width: $bp-phone) {
+    .tier-card-container {
+        .global-inputs {
+            grid-template-columns: repeat(1, 1fr);
+        }
+
+        .details-container {
+            flex-direction: column;
+
+            .details {
+                .title {
+                    font-size: $text-sm;
+                    margin-bottom: $space-2;
+                }
+            }
+        }
+
+        .delete {
+            width: 1rem;
+            height: 1rem;
+        }
+    }
+}

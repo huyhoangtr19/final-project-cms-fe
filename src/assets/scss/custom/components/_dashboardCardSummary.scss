@@ -1,0 +1,67 @@
+.dashboard-card-summary-container {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid $color-gray-200;
+    border-radius: $radius-md;
+    box-shadow: $shadow-sm;
+}
+
+.dashboard-card-summary-header {
+    display: flex;
+    position: relative;
+    justify-content: space-between;
+    padding: $space-3 $space-3 $space-1 $space-3;
+}
+
+.dashboard-card-summary-title {
+    font-size: $text-lg;
+    color: $color-gray-800;
+    font-family: $font-semibold;
+    margin-top: -$space-1;
+}
+
+.dashboard-card-summary-body {
+    display: flex;
+    flex-direction: column;
+    padding: 0 $space-3 $space-3 $space-3;
+}
+
+.dashboard-card-summary-main-figure {
+    font-size: $text-2xl;
+    color: $actiwell-navy-light;
+    margin: 0;
+}
+
+.dashboard-card-summary-indication {
+    margin: 0;
+    color: $color-info;
+
+    &.negative {
+        color: $color-error;
+    }
+}
+
+@media screen and (max-width: $bp-phone) {
+    .dashboard-card-summary-header {
+        padding: $space-2 $space-2 0 $space-2;
+    }
+
+    .dashboard-card-summary-title {
+        font-size: $text-sm;
+        margin-top: -0.1rem;
+    }
+
+    .dashboard-card-summary-body {
+        display: flex;
+        flex-direction: column;
+        padding: 0 $space-2 $space-2 $space-2;
+    }
+
+    .dashboard-card-summary-main-figure {
+        font-size: $text-base;
+    }
+
+    .dashboard-card-summary-indication {
+        font-size: $text-xs;
+    }
+}

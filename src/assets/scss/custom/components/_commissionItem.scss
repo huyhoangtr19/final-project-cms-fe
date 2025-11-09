@@ -1,0 +1,21 @@
+.commission-item-container {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    padding: $space-2;
+    gap: $space-3;
+    background-color: rgba($color-info-light, 0.2);
+    border: 1px solid $color-gray-200;
+    border-radius: $radius-lg;
+
+    div {
+        flex: 1;
+    }
+}
+
+.commission-item-close {
+    position: absolute;
+    top: $space-3;
+    right: $space-3;
+    cursor: pointer;
+}

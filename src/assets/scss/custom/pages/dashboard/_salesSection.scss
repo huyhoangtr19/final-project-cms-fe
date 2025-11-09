@@ -1,0 +1,93 @@
+.dashboard-sales-section-container {
+    display: flex;
+    flex-direction: column;
+    gap: $space-3;
+}
+
+.dashboard-sales-section-1 {
+    display: flex;
+    flex: 1;
+    gap: $space-3;
+
+    .dashboard-card-container {
+        flex: 4;
+        height: 25rem;
+
+        &:first-child {
+            flex: 2;
+        }
+
+        &:last-child {
+            flex: 2;
+        }
+
+        .dashboard-card-body {
+            display: flex;
+            flex-direction: column;
+
+            .customer-source-analysis-container {
+                display: flex;
+                flex-direction: column;
+                flex: 1;
+                overflow-x: auto;
+            }
+
+            .sales-analysis-pie-container {
+                flex: 1;
+            }
+
+            .customer-pipeline-container {
+                display: flex;
+                flex-direction: column;
+                height: 100%;
+
+                .funnel-container {
+                    flex: 1;
+                }
+            }
+        }
+    }
+}
+
+.dashboard-total-revenue-container {
+    height: 20rem;
+}
+
+.custom-chart-legend {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: $space-4;
+    row-gap: $space-1;
+    width: 100%;
+
+    .legend-container {
+        display: flex;
+        align-items: center;
+        gap: $space-1;
+    }
+}
+
+@media screen and (max-width: $bp-phone) {
+    .dashboard-sales-section-1 {
+        flex-direction: column;
+
+        .dashboard-card-container {
+            height: 25rem;
+            flex: none;
+
+            &:first-child{
+                flex: none;
+            }
+
+            &:last-child{
+                flex: none;
+            }
+        }
+    }
+
+    .custom-chart-legend {
+        font-size: $text-xs;
+    }
+}

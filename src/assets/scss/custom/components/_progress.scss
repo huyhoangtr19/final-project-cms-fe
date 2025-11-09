@@ -1,0 +1,115 @@
+// 
+// _progress.scss
+// 
+
+// Progress height small
+.progress-sm {
+  height: 5px;
+}
+
+
+// Progress height medium
+.progress-md {
+  height: 8px;
+}
+
+
+// Progress height large
+.progress-lg {
+  height: 12px;
+}
+
+// Progress height Extra large
+.progress-xl {
+  height: 16px;
+}
+
+.custom-progess {
+  position: relative;
+
+  .progress-icon {
+    position: absolute;
+    top: -12px;
+
+    .avatar-title {
+      background: var(--#{$prefix}secondary-bg);
+    }
+  }
+}
+
+// animated-progess
+
+.animated-progess {
+  position: relative;
+
+  .progress-bar {
+    position: relative;
+    border-radius: 6px;
+    animation: animate-positive 2s;
+  }
+}
+
+@keyframes animate-positive {
+  0% {
+    width: 0;
+  }
+}
+
+.progress-bar-num {
+  padding: 2px 8px;
+  top: -13px;
+  background-color: white;
+  border-radius: 444px;
+  font-size: $text-sm;
+  z-index: 1;
+  color: $color-gray-300;
+  text-align: center;
+  border: 2px solid $color-gray-300;
+}
+
+.progress-bar-num-info {
+  padding: 2px 9px;
+  top: -13px;
+  font-size: $text-sm;
+  background-color: $info;
+  border-radius: 444px;
+  z-index: 1;
+  color: $actiwell-cream;
+  text-align: center;
+  border: 2px solid shade-color($info, 10%);
+
+  i {
+    font-size: 11px;
+  }
+}
+
+.progress-bar-name {
+  top: 20px;
+  z-index: 1;
+  color: $info;
+  color: $color-gray-400;
+  transform: translateX(-50%);
+}
+
+.progress-bar-name-info {
+  top: 20px;
+  z-index: 1;
+  color: $info;
+  transform: translateX(-50%);
+}
+
+.progress-bar-info {
+  height: 4px;
+  top: 0px;
+  position: relative;
+  background-color: $info;
+  border-radius: 4px;
+  transition: width 0.3s ease-out;
+}
+
+.probress-bar-full {
+  height: 4px;
+  margin-top: 1rem;
+  position: relative;
+  background-color: $color-gray-300;
+}

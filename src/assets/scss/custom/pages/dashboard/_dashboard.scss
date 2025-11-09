@@ -1,0 +1,68 @@
+.dashboard-title {
+    font-size: $text-4xl;
+    color: $actiwell-navy;
+    margin-left: $space-4;
+    margin-top: $space-1;
+    margin-bottom: $space-2;
+}
+
+.dashboard-tabs-header {
+    display: flex;
+    justify-content: space-between;
+}
+
+.dashboard-tabs-selects {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    padding: 0 $space-4;
+    border-bottom: 1px solid $color-gray-200;
+    background-color: $color-white;
+}
+
+.dashboard-sections {
+    display: flex;
+    flex-direction: column;
+    gap: $space-3;
+}
+
+.dashboard-scroll {
+    scroll-margin-top: $space-12;
+}
+
+.chart-hover-label {
+    display: flex;
+    background-color: $color-white;
+    padding: $space-1;
+    border: 1px solid $color-gray-200;
+    border-radius: $radius-sm;
+    text-wrap: nowrap;
+
+    strong {
+        font-weight: $font-semibold;
+        margin-left: $space-1;
+    }
+}
+
+@media screen and (max-width: $bp-phone) {
+    .dashboard-title {
+        font-size: $text-3xl;
+        margin-left: $space-3;
+    }
+
+    .dashboard-tabs-header {
+        flex-direction: column;
+        gap: $space-1;
+        background-color: $color-white;
+        padding-bottom: $space-1;
+        border-bottom: 1px solid $color-gray-200;
+    }
+
+    .dashboard-tabs-selects {
+        flex-wrap: wrap;
+        padding : 0;
+        margin: 0 $space-2;
+        justify-content: center;
+        border: none;
+    }
+}

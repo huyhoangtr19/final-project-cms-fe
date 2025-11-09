@@ -1,0 +1,632 @@
+//
+// _calendar.scss
+//
+
+.fc .fc-media-screen {
+  height: 100%;
+}
+
+//
+// Tob bar
+//
+
+.fc-toolbar-chunk {
+  margin-top: 1rem;
+  display: flex;
+
+  &:first-child div {
+    display: flex;
+    flex-direction: row;
+
+    // Title
+    h2.fc-toolbar-title {
+      color: $actiwell-navy;
+      padding: 0.2rem 0.4rem;
+      font-size: $text-lg;
+      text-align: center;
+      text-transform: none;
+    }
+  }
+
+  .fc-AddNewBooking-button.btn.btn-primary {
+    padding: 0;
+    margin: 0;
+    background-color: transparent;
+    border: none;
+
+  }
+}
+
+.view-switcher {
+  display: flex;
+  background: $color-gray-100;
+  border-radius: $radius-md;
+  padding: $space-1;
+}
+
+.view-btn {
+  color: $actiwell-navy;
+  padding: $space-1 $space-3;
+  background: transparent;
+  border: none;
+  border-radius: $radius-sm;
+  cursor: pointer;
+  font-family: $font-family-primary;
+  font-size: $text-sm;
+  font-weight: 500;
+  transition: all 0.2s;
+  color: $color-gray-600;
+  margin-left: 0;
+}
+
+.view-btn.active,
+.view-btn.highlighted-toolbar,
+.view-btn:hover {
+  background: $actiwell-navy;
+  color: $actiwell-cream;
+  box-shadow: $shadow-sm;
+}
+
+@media screen and (min-width: $bp-calendar-small) and (max-width: $bp-calendar) {
+  .fc-toolbar {
+
+    .fc-toolbar-chunk {
+
+      &.view-switcher {
+        padding: 4px;
+
+        .view-btn {
+          font-size: $text-sm;
+          padding: 4px 6px;
+          width: 100%;
+          border-radius: $radius-md;
+        }
+      }
+
+      .btn {
+        font-size: $text-sm;
+        padding: $space-1 $space-2;
+        width: 100%;
+        border-radius: $radius-md;
+      }
+
+      div {
+        h2.fc-toolbar-title {
+          font-size: $text-sm;
+          padding: 0 0.4rem;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $bp-calendar-small) {
+  .fc-media-screen:has(:not(.fc-trainerDayView-view, .fc-trainerWeekView-view)) {
+
+    .fc-toolbar {
+      display: flex;
+      flex-direction: row-reverse !important;
+      justify-content: end !important;
+      gap: $space-2;
+
+      .fc-toolbar-chunk:first-child {
+        display: none;
+      }
+
+      .btn {
+        font-size: $text-sm;
+        padding: $space-1 $space-2;
+        width: 100%;
+        border-radius: $radius-md;
+      }
+    }
+  }
+
+  .fc-media-screen:has(.fc-trainerDayView-view,
+    .fc-trainerWeekView-view) {
+    .fc-todayOfData-button {
+      display: none !important;
+    }
+
+    .fc-nextOfData-button,
+    .fc-prevOfData-button {
+      width: fit-content !important;
+      font-size: $text-sm !important;
+      padding: $space-1 $space-2 !important;
+      border-radius: $radius-md !important;
+      font-weight: $font-medium !important;
+    }
+
+    .fc-toolbar-title {
+      font-size: $text-sm !important;
+      padding: 1px 0.3rem !important;
+    }
+  }
+}
+
+//
+// Calendar
+//
+.fc-trainerDayView-view,
+.fc-monthOfData-view {
+
+  // Place numbers
+  a.fc-daygrid-day-number {
+    width: 100%;
+
+    div {
+      color: $actiwell-navy;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  div.fc-scrollgrid-sync-inner {
+    color: $actiwell-navy;
+  }
+
+  // Fix daygrid heigth
+  .fc-daygrid-day {
+    height: 165px;
+  }
+
+  .fc-daygrid-dot-event {
+    display: flex;
+    align-items: center;
+  }
+
+  // Today
+  td.fc-day-today {
+    background-color: $color-gray-100 !important;
+
+    .fc-daygrid-day-frame {
+      background-color: $color-gray-100;
+      border: 2px solid $actiwell-navy;
+      height: 100%;
+
+      .fc-daygrid-day-number {
+        div {
+          background: $actiwell-navy;
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          color: $actiwell-cream;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+      }
+    }
+  }
+
+  .fc-daygrid-day-bottom {
+    display: flex;
+    align-items: center;
+  }
+
+  .fc-more-link {
+    width: 90%;
+    background-color: $color-gray-200;
+    margin: 0rem auto;
+  }
+}
+
+.fc-daygrid-day-frame {
+  height: 100%;
+}
+
+//
+// Week view
+// 
+.fc-timeGridWeek-view,
+.fc-weekOfData-view,
+.fc-dayOfData-view {
+
+  .fc-timegrid-col.fc-day-today {
+    background-color: $color-gray-100;
+  }
+
+  .fc-day-today {
+    .fc-daygrid-day-frame {
+      background-color: $color-gray-100;
+    }
+  }
+
+  .fc-daygrid-day-frame {
+    height: 4rem;
+
+
+
+    .fc-daygrid-day-top {
+      height: inherit;
+
+      .nb-event-day {
+        background-color: $actiwell-navy;
+      }
+    }
+  }
+}
+
+//
+// Time grid
+//
+.fc-resourceTimeGridDay-view {
+  .fc-day-today {
+    .fc-daygrid-day-frame {
+      background-color: $color-gray-100;
+    }
+  }
+
+  .fc-timegrid-col-frame {
+    border: 1px solid $color-gray-300 !important;
+  }
+
+  .fc-timegrid-col.fc-day-today {
+    background-color: $color-gray-100;
+  }
+}
+
+@media screen and (min-width: $bp-calendar) {
+  .gecko {
+
+    .fc.fc-media-screen:has(.fc-monthOfData-view),
+    .fc.fc-media-screen:has(.fc-dayGridMonth-view),
+    .fc.fc-media-screen:has(.fc-weekOfData-view),
+    .fc.fc-media-screen:has(.fc-dayOfData-view),
+    .fc.fc-media-screen:has(.fc-trainerWeekView-view),
+    .fc.fc-media-screen:has(.fc-trainerDayView-view),
+    .fc.fc-media-screen:has(.fc-timeGridWeek-view),
+    .fc.fc-media-screen:has(.fc-timeGridDay-view),
+    .fc.fc-media-screen:has(.fc-resourceTimeGridDay-view),
+    .fc.fc-media-screen:has(.fc-resourceTimelineMonth-view),
+    .fc.fc-media-screen:has(.fc-resourceTimelineWeek-view) {
+      .fc-scrollgrid-section-header.fc-scrollgrid-section-sticky {
+        th {
+          top: calc(72px - $space-2) !important;
+
+          .fc-timeline-slot-cushion {
+            position: absolute;
+            color: $actiwell-navy;
+            top: calc(-72px + $space-2) !important;
+          }
+
+          .fc-col-header-cell-cushion {
+            position: relative;
+            color: $actiwell-navy;
+            top: calc(-72px + $space-2) !important;
+          }
+
+          .fc-col-header-badge {
+            position: relative;
+            top: calc(-72px + $space-2) !important;
+          }
+        }
+
+        .fc-resource-timeline-divider {
+          top: calc(72px - $space-2) !important;
+        }
+      }
+    }
+  }
+
+  .chrome {
+
+    .fc.fc-media-screen:has(.fc-monthOfData-view),
+    .fc.fc-media-screen:has(.fc-timeGridWeek-view),
+    .fc.fc-media-screen:has(.fc-trainerWeekView-view),
+    .fc.fc-media-screen:has(.fc-trainerDayView-view),
+    .fc.fc-media-screen:has(.fc-weekOfData-view),
+    .fc.fc-media-screen:has(.fc-dayOfData-view),
+    .fc.fc-media-screen:has(.fc-timeGridDay-view),
+    .fc.fc-media-screen:has(.fc-resourceTimeGridDay-view),
+    .fc.fc-media-screen:has(.fc-resourceTimelineMonth-view),
+    .fc.fc-media-screen:has(.fc-resourceTimelineWeek-view) {
+      .fc-scrollgrid-section-header.fc-scrollgrid-section-sticky {
+        th[role="presentation"] {
+          top: calc(72px - $space-2) !important;
+        }
+
+        .fc-resource-timeline-divider {
+          top: calc(72px - $space-2) !important;
+        }
+      }
+    }
+  }
+
+  .sticky-additional-content {
+    position: sticky;
+    top: calc(72px - $space-2) !important;
+    background-color: white;
+    border-bottom: 1px solid black;
+    z-index: 4;
+  }
+}
+
+@media screen and (min-width: $bp-calendar) {
+  .fc-toolbar {
+    position: sticky;
+    top: -$space-2;
+    background: white;
+    z-index: 3;
+    padding: 8px;
+  }
+}
+
+// force week/day/list view to have a minwidth
+@media screen and (max-width: $bp-calendar) {
+
+  .fc-view-harness:has(.fc-listYear-view),
+  .fc-view-harness:has(.fc-weekOfData-view),
+  .fc-view-harness:has(.fc-dayOfData-view),
+  .fc-view-harness:has(.fc-trainerDayView-view),
+  .fc-view-harness:has(.fc-trainerWeekView-view),
+  .fc-view-harness:has(.fc-timeGridWeek-view),
+  .fc-view-harness:has(.fc-resourceTimeGridDay-view),
+  .fc-view-harness:has(.fc-listWeek-view) {
+    overflow-x: auto;
+
+    .fc-listYear-view,
+    .fc-weekOfData-view,
+    .fc-DayOfData-view,
+    .fc-resourceTimeGridDay-view,
+    .fc-timeGridWeek-view,
+    .fc-listWeek-view {
+      min-width: 1400px;
+    }
+  }
+}
+
+//
+// More popup
+//
+.fc-popover-body.popover-body {
+  .container-item-calendar {
+    width: 90%;
+    height: 100%;
+    border-radius: 5px;
+    color: white;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+    gap: 2px;
+    margin: 0 auto;
+    text-align: center;
+    word-break: break-word;
+    overflow: hidden;
+  }
+
+  .item-calendar {
+    width: 90%;
+    border-radius: 5px;
+    color: white;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+    gap: 2px;
+    text-align: left;
+    word-break: break-word;
+    align-items: left;
+    margin-left: 5px;
+    padding-right: 5px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+  }
+}
+
+.fc-popover {
+  max-width: none !important;
+}
+
+.fc-listYear-view,
+.fc-listWeek-view {
+  .badge {
+    padding: $space-1 $space-2;
+    height: max-content;
+  }
+}
+
+.fc-list-day-cushion {
+  background-color: $actiwell-navy-light;
+  color: $actiwell-cream;
+  border-radius: $radius-sm;
+}
+
+//
+// Mobile toolbar
+//
+.btn-mob-menu {
+  color: $actiwell-cream;
+  background-color: $actiwell-navy;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  font-weight: $font-medium;
+  font-size: $text-sm;
+  padding: $space-1 $space-2;
+  font-family: $font-family-primary;
+  border: 1px solid transparent;
+  border-radius: $radius-md;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all $transition-fast;
+
+  &:hover {
+    transform: translateY(-1px);
+    background-color: $actiwell-navy-dark;
+    border-color: $actiwell-navy-dark;
+    font-weight: $font-medium;
+  }
+}
+
+
+.button-wrapper-mob {
+
+  position: absolute;
+  top: 100%;
+  width: 4.7rem;
+  right: 0;
+  background: #fff;
+  border: 1px solid $color-gray-300;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-md;
+  display: flex;
+  flex-direction: column;
+  z-index: 1000;
+  padding: 4px;
+  margin-top: 2px;
+
+  .btn {
+    width: 100%;
+    box-shadow: none;
+    margin-bottom: 5px;
+
+    &:last-child {
+      margin-bottom: 0;
+
+    }
+  }
+}
+
+.fc-trainerWeekView-view {
+  .fc-event.fc-event-start.fc-event-end.fc-timeline-event.fc-h-event {
+    margin-right: 7px !important;
+  }
+}
+
+//
+// Schedule
+//
+.fc-trainerDayView-view,
+.fc-trainerWeekView-view {
+  .fc-event {
+    background-color: transparent;
+    padding: 0;
+  }
+
+  .item-calendar-schedule {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    color: white;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+    gap: 2px;
+    text-align: center;
+    word-break: break-word;
+    align-items: center;
+    margin-left: 5px;
+    padding-right: 5px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+  }
+
+  .container-calendar-schedule {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    color: white;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+    gap: 2px;
+    text-align: center;
+    word-break: break-word;
+    overflow: hidden;
+  }
+}
+
+.fc-monthOfData-view {
+
+  .fc-event,
+  .fc-event-main {
+    background-color: transparent;
+    padding: 0;
+  }
+
+  .container-item-calendar {
+    width: 90%;
+    height: 100%;
+    border-radius: 5px;
+    color: white;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    margin: 0 auto;
+    z-index: 2;
+    text-align: center;
+    word-break: break-word;
+    overflow: hidden;
+  }
+
+  .item-calendar {
+    width: 90%;
+    height: 100%;
+    border-radius: 5px;
+    color: white;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+    gap: 2px;
+    text-align: left;
+    word-break: break-word;
+    align-items: left;
+    margin-left: 5px;
+    padding-right: 5px;
+    border-bottom-left-radius: 0;
+    border-top-left-radius: 0;
+  }
+}
+
+.fc-weekOfData-view,
+.fc-dayOfData-view {
+
+  .fc-event,
+  .fc-event-main {
+    background-color: transparent;
+    padding: 0;
+  }
+
+  .item-calendar {
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+    color: white;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+    gap: 2px;
+    text-align: left;
+    word-break: break-word;
+    align-items: left;
+    padding-left: 2px;
+  }
+}
+
+.bg-yellow {
+  background-color: #FFC107 !important;
+}
+
+.fc-weekOfData-view,
+.fc-dayOfData-view,
+.fc-resourceTimeGridDay-view {
+  .fc-timegrid-slot {
+    border-top: 1px solid #ddd;
+  }
+
+  .fc-timegrid-slot:not(.fc-timegrid-slot-minor) {
+    border-top: 1px solid $color-gray-500 !important;
+  }
+}

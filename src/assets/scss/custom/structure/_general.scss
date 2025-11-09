@@ -1,0 +1,36 @@
+.content-container {
+    background: $color-white;
+    border-radius: $radius-xl;
+    box-shadow: $shadow-sm;
+    border: 1px solid $color-gray-200;
+    padding: $space-3;
+    height: calc(100dvh - $header-height - 2*$space-2);
+    position: relative;
+    overflow-y: scroll;
+}
+
+.separator {
+    border: 1px solid $color-gray-300;
+}
+
+.separator-primary {
+    border: 1px solid $actiwell-navy;
+}
+
+.separator-secondary {
+    border: 1px solid $actiwell-red;
+}
+
+.flex-responsive {
+    flex-direction: row;
+}
+
+@media screen and (max-width: $bp-phone) {
+    .content-container {
+        border-radius: $radius-md;
+    }
+
+    .flex-responsive {
+        flex-direction: column;
+    }
+}

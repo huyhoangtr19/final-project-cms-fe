@@ -1,0 +1,181 @@
+//
+// _filters.scss
+//
+
+
+/* Filter Components */
+.filter-container {
+    background: $color-white;
+    border-radius: $radius-xl;
+    border: 1px solid $color-gray-200;
+    padding: $space-2;
+    margin-bottom: $space-4;
+}
+
+.filter-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.filter-title-group {
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+    width: 100%;
+    cursor: pointer;
+
+    &:hover {
+        .filter-clear {
+            background: rgba(196, 46, 42, 0.1);
+        }
+    }
+}
+
+.filter-title {
+    font-size: $text-lg;
+    font-weight: $font-semibold;
+    color: $actiwell-navy;
+    margin: 0;
+}
+
+.filter-clear {
+    background: none;
+    border: none;
+    color: $actiwell-red;
+    font-size: $text-sm;
+    font-weight: $font-medium;
+    cursor: pointer;
+    padding: $space-2 $space-4;
+    border-radius: $radius-md;
+    transition: all $transition-fast;
+
+    &:hover {
+        background: rgba(196, 46, 42, 0.1);
+    }
+}
+
+.filter-reset {
+    background: none;
+    border: none;
+    color: $actiwell-red;
+    font-size: $text-sm;
+    font-weight: $font-medium;
+    cursor: pointer;
+    padding: $space-2 $space-4;
+    border-radius: $radius-md;
+    transition: all $transition-fast;
+    white-space: nowrap;
+
+    &:hover {
+        background: rgba(196, 46, 42, 0.1);
+    }
+}
+
+.filter-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: $space-6;
+    margin-top: $space-4;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-label {
+    font-size: $text-sm;
+    font-weight: $font-medium;
+    color: $color-gray-700;
+    margin-bottom: $space-2;
+}
+
+.filter-select {
+    padding: $space-2 $space-3;
+    border: 1px solid $color-gray-300 !important;
+    border-radius: $radius-lg;
+    font-family: $font-family-primary;
+    font-size: $text-sm;
+    background: $color-white;
+    transition: all $transition-fast;
+    background-position: right 0.25rem center !important;
+    box-shadow: none;
+
+    &:focus {
+        outline: none;
+        border-color: $actiwell-navy !important;
+        box-shadow: 0 0 0 3px rgba(58, 59, 92, 0.1);
+    }
+}
+
+.filter-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: $space-2;
+    margin-top: $space-4;
+}
+
+.filter-tag {
+    background: $actiwell-navy;
+    color: $actiwell-cream;
+    padding: $space-2 $space-4;
+    border-radius: $radius-full;
+    font-size: $text-xs;
+    font-weight: $font-medium;
+    display: flex;
+    align-items: center;
+    gap: $space-2;
+}
+
+.filter-tag-remove {
+    background: rgba(244, 241, 237, 0.2);
+    border: none;
+    color: $actiwell-cream;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    transition: all $transition-fast;
+
+    &:hover {
+        background: rgba(244, 241, 237, 0.3);
+    }
+}
+
+@media screen and (max-width: $bp-phone) {
+    .filter-container {
+        border-radius: $radius-md;
+    }
+
+    .filter-title {
+        font-size: $text-base;
+    }
+
+    .filter-clear, .filter-reset {
+        font-size: $text-xs;
+        padding: $space-1 $space-2;
+    }
+
+    .filter-grid {
+        gap: $space-3;
+    }
+
+    .filter-label {
+        margin-bottom: $space-1;
+    }
+
+    .filter-select {
+        padding: $space-1 $space-2;
+        border-radius: $radius-md;
+        font-size: $text-xs;
+    }
+
+    .filter-label {
+        font-size: $text-xs;
+    }
+}
