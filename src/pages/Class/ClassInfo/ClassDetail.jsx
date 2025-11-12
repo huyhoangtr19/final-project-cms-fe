@@ -21,7 +21,7 @@ const ClassDetail = (props) => {
   const [newClass, setNewClass] = useState(null);
   const [nameClass, setNameClass] = useState("");
   const [serviceId, setServiceId] = useState(null);
-  document.title = "Class | Actiwell System";
+  document.title = "Class | Fitness CMS";
   const listSection = [
     { name: i18n.t("general_info"), id: "1" },
     { name: i18n.t("schedule_list"), id: "2" },

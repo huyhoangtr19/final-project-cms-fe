@@ -65,13 +65,10 @@ export default {
       `/v1/cms/customers/packages?${getParamsHelp(params)}`
     );
   },
-  syncCustomerFromHanet() {
-    return ApiClientWithToken.post(`/v1/cms/customers/sync-hanet`);
-  },
   importCustomerFromExcelFile(requestBody) {
     return fileDataClientWithToken.post(`/v1/cms/customers/import-excel`, requestBody);
   },
   resetPasswordDefauld(id) {
-    return ApiClientWithToken.put(`/v1/cms/customers/${id}/change-password`, { password: "Actiwell@1234" })
+    return ApiClientWithToken.put(`/v1/cms/customers/${id}/change-password`, { password: "FitPro@1234" })
   }
 };

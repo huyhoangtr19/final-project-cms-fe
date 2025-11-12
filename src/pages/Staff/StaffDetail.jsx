@@ -26,7 +26,7 @@ const listSection = [
 ];
 const StaffDetail = (props) => {
   const { id } = useParams();
-  document.title = "Staff | Actiwell System";
+  document.title = "Staff | Fitness CMS";
   const [currentTabActive, setCurrentTabActive] = useState(
     props.type === "create" ? "1" : "3"
   );

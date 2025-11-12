@@ -41,14 +41,14 @@
     white-space: nowrap;
 
     &:hover {
-        color: $actiwell-navy;
+        color: $brand-navy;
         background: rgba(58, 59, 92, 0.05);
     }
 
     &.active {
-        color: $actiwell-navy;
+        color: $brand-navy;
         background: $color-white;
-        border-bottom-color: $actiwell-red;
+        border-bottom-color: $brand-red;
         font-weight: $font-semibold;
     }
 }
@@ -60,8 +60,8 @@
 }
 
 .tab-badge {
-    background: $actiwell-red;
-    color: $actiwell-cream;
+    background: $brand-red;
+    color: $brand-cream;
     font-size: $text-xs;
     padding: $space-1 $space-2;
     border-radius: $radius-full;

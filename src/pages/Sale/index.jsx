@@ -27,7 +27,7 @@ import { useAppSelector } from "../../hook/store.hook";
 import { debounce } from "lodash";
 
 const Sale = (props) => {
-  document.title = "Sale | Actiwell System";
+  document.title = "Sale | Fitness CMS";
   const [sales, setSales] = useState([]);
   const [totalRecord, setTotalRecord] = useState(0);
   const [totalPage, setTotalPage] = useState(0);

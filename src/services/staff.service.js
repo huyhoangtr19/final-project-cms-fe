@@ -57,17 +57,6 @@ export default {
       `/v1/cms/staffs/available?${getParamsHelp(params)}`
     );
   },
-  importSchedule(requestBody) {
-    return formDataClientWithToken.post(
-      `/v1/cms/staffs/import/schedule`,
-      requestBody
-    );
-  },
-  exportSchedule() {
-    return ApiClientWithToken.get(`/v1/cms/staffs/template/schedule`, {
-      responseType: "blob",
-    });
-  },
   getListTrainerAvaiableByTime(params = {}) {
     return ApiClientWithToken.get(
       `/v1/cms/staffs/available-by-time?${getParamsHelp(params)}`

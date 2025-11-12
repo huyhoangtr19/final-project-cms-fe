@@ -29,7 +29,7 @@ const listSection = [
 ];
 
 const BookingToday = (props) => {
-  document.title = "Booking Today | Actiwell System";
+  document.title = "Booking Today | Fitness CMS";
   const [typeScreen, setTypeScreen] = useState(STATUS_BOOKING.RESERVER);
   const [booking, setBookings] = useState([]);
   const [totalRecord, setTotalRecord] = useState(0);

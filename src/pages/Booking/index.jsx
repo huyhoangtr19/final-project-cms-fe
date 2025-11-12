@@ -21,7 +21,6 @@ import InputSearch from "../../components/Common/InputSearch";
 import MyDropdown from "../../components/Common/MyDropdown";
 import IcPlus from "../../assets/icon/IcPlus";
 import withRouter from "../../components/Common/withRouter";
-import customerService from "../../services/customer.service";
 import bookingService from "../../services/booking.service";
 import sourceService from "../../services/source.service";
 import operatorService from "../../services/operator.service";
@@ -36,11 +35,9 @@ import listPlugin from "@fullcalendar/list";
 import BootstrapTheme from "@fullcalendar/bootstrap";
 import Spinners from "../../components/Common/Spinner";
 import { convertToUtcString, formatDate } from "../../utils/app";
-import QRCodeCheckInScanner from "../../components/Common/QRCodeCheckInScanner";
 import { toast } from "react-toastify";
 import MyDropdownColor from "../../components/Common/MyDropdownColor";
 import { useAppSelector } from "../../hook/store.hook";
-import IcQR from "../../assets/icon/IcQR";
 import { detectBrowser } from "../../utils/app";
 import styled from "styled-components";
 import { useLocation } from "react-router-dom";
@@ -54,13 +51,8 @@ const StatusDot = styled.span`
   margin-right: 8px;
 `;
 
-const selectBookingType = [
-  { value: 1, label: i18n.t("booking"), color: "#EA580C" },
-  { value: 2, label: i18n.t("booking_pt"), color: "#7c3aed" },
-];
-
 const Booking = (props) => {
-  document.title = "Booking | Actiwell System";
+  document.title = "Booking | Fitness CMS";
   const calendarRef = useRef(null);
 
   const getCalendarApi = () => {
@@ -93,8 +85,6 @@ const Booking = (props) => {
   );
   const [isLoading, setLoading] = useState(false);
   const [isChange, setIsChange] = useState(false);
-  const [showCamera, setShowCamera] = useState(false);
-  const isCheckingRef = useRef(false);
 
   const [eventCounts, setEventCounts] = useState({});
 
@@ -102,9 +92,6 @@ const Booking = (props) => {
   const [chainLoad, triggerChainLoad] = useState(false);
   const [buttonsCopy, setButtonsCopy] = useState("");
   const rootRef = useRef(null);
-
-  const [displayBooking, setDisplayBooking] = useState(true);
-  const [displayBookingPt, setDisplayBookingPt] = useState(true);
 
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -116,56 +103,6 @@ const Booking = (props) => {
       setIsList(tabParam);
     }
   }, [tabParam]);
-
-  const handleScanCheckIn = async (data) => {
-    if (data && !isCheckingRef.current) {
-      try {
-        isCheckingRef.current = true;
-        const res = await customerService.checkInMember(data);
-        setShowCamera(false);
-        const messageConfig = {
-          check_in_success: {
-            type: "success",
-            text: "Check in thành công",
-          },
-          package_not_found: {
-            type: "info",
-            text: "Gói tập của khách hàng đã hết hạn",
-          },
-          location_not_apply: {
-            type: "info",
-            text: "Gói tập của khách hàng không được áp dụng tại chi nhánh",
-          },
-        };
-        const message = messageConfig[res.data.code];
-        toast[message.type](message.text, {
-          position: "top-right",
-          autoClose: 5000,
-          theme: "light",
-          hideProgressBar: true,
-        });
-        isCheckingRef.current = false;
-      } catch (error) {
-        setShowCamera(false);
-        isCheckingRef.current = false;
-        if (error.message === "expired") {
-          toast.error("QR hết hạn", {
-            position: "top-right",
-            autoClose: 5000,
-            theme: "light",
-            hideProgressBar: true,
-          });
-        } else {
-          toast.error("Check in đã xảy ra lỗi", {
-            position: "top-right",
-            autoClose: 5000,
-            theme: "light",
-            hideProgressBar: true,
-          });
-        }
-      }
-    }
-  };
 
   const handleCheckInBooking = async (bookingId) => {
     try {
@@ -277,18 +214,10 @@ const Booking = (props) => {
     }
   };
 
-  const bookingList = useMemo(() => {
-    if (
-      (displayBooking && displayBookingPt) ||
-      (!displayBooking && !displayBookingPt)
-    ) {
-      return booking.concat(ptBooking);
-    } else if (displayBooking) {
-      return booking;
-    } else {
-      return ptBooking;
-    }
-  }, [displayBooking, displayBookingPt, booking, ptBooking]);
+  const bookingList = useMemo(
+    () => booking.concat(ptBooking),
+    [booking, ptBooking]
+  );
 
   useEffect(() => {
     const counts = {};
@@ -434,12 +363,6 @@ const Booking = (props) => {
     };
   };
 
-  const qrScannerRef = useRef();
-
-  const openCamera = () => {
-    qrScannerRef.current?.triggerCamera(); // Call the exposed function
-  };
-
   const customButtons = {
     listOfData: {
       text: i18n.t("list"),
@@ -575,12 +498,6 @@ const Booking = (props) => {
         }
       },
     },
-    QrScanner: {
-      text: "",
-      click: () => {
-        openCamera();
-      },
-    },
     AddNewBooking: {
       text: i18n.t(""),
       click: () => {},
@@ -629,35 +546,6 @@ const Booking = (props) => {
       latest: moment().startOf("day").add(max, "minutes").format("HH:mm:ss"),
     };
   }, [bookingList]);
-
-  const reactRootRefQr = useRef(null);
-
-  useEffect(() => {
-    const toolbarEl = document.querySelector(".fc-QrScanner-button");
-
-    if (toolbarEl) {
-      toolbarEl.classList.remove("btn-primary");
-      toolbarEl.classList.add("btn-outline");
-
-      if (!toolbarEl.querySelector("#qr-scanner-button")) {
-        const placeholder = document.createElement("div");
-        placeholder.id = "qr-scanner-button";
-        toolbarEl.innerHTML = "";
-        toolbarEl.appendChild(placeholder);
-
-        // React 18+ rendering
-        reactRootRefQr.current = createRoot(placeholder);
-        reactRootRefQr.current.render(
-          <div className="d-flex align-items-center gap-2">
-            <IcQR color="#2563EB" />
-            <div className="" style={{ lineHeight: "17px" }}>
-              Check in
-            </div>
-          </div>
-        );
-      }
-    }
-  }, []);
 
   const reactRootRefAdd = useRef(null);
 
@@ -1003,117 +891,28 @@ const Booking = (props) => {
                   <h5 className="filter-title">{i18n.t("all_bookings")}</h5>
                 </div>
                 {window.innerWidth >= "800" && (
-                  <>
-                    <div
-                      className=""
-                      style={{
-                        display: "flex",
-                        width: "auto",
-                        marginRight: "0.5rem",
-                        alignItems: "right",
-                      }}
-                    >
-                      <div
-                        className="btn btn-outline-warning"
-                        style={{ marginRight: "0.5rem" }}
-                        onClick={() => {
-                          setDisplayBooking((prev) => !prev);
-                        }}
-                      >
-                        <input
-                          type="checkbox"
-                          name="booking"
-                          id="public"
-                          checked={displayBooking}
-                        />
-                        {i18n.t("group_booking")}
-                      </div>
-                      <div
-                        className="btn btn-outline-purple"
-                        onClick={() => {
-                          setDisplayBookingPt((prev) => !prev);
-                        }}
-                      >
-                        <input
-                          type="checkbox"
-                          name="booking"
-                          id="private"
-                          checked={displayBookingPt}
-                        />
-                        {i18n.t("booking_pt")}
-                      </div>
-                    </div>
-                    <div
-                      className=""
-                      style={{
-                        minWidth: "180px",
-                        marginRight: "0.5rem",
-                        cursor: "pointer",
-                      }}
-                    >
-                      <MyDropdownMultiple
-                        options={data.locations}
-                        placeholder={i18n.t("location")}
-                        selected={params.locations}
-                        setSelected={handleSetLocations}
-                        displayEmpty={true}
-                      />
-                    </div>
-                  </>
+                  <div
+                    className=""
+                    style={{
+                      minWidth: "180px",
+                      marginRight: "0.5rem",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <MyDropdownMultiple
+                      options={data.locations}
+                      placeholder={i18n.t("location")}
+                      selected={params.locations}
+                      setSelected={handleSetLocations}
+                      displayEmpty={true}
+                    />
+                  </div>
                 )}
                 <button className="filter-reset" onClick={handleResetFilter}>
                   {i18n.t("reset")}
                 </button>
               </div>
               <Collapse isOpen={filterOpen} className="filter-grid">
-                {window.innerWidth < "800" && (
-                  <div className="filter-group">
-                    <label htmlFor="booking-type">
-                      {i18n.t("booking_type")}
-                    </label>
-                    <div>
-                      <div
-                        className=""
-                        style={{
-                          display: "flex",
-                          width: "auto",
-                          marginRight: "0.5rem",
-                          alignItems: "right",
-                        }}
-                      >
-                        <div
-                          className="btn btn-outline-warning"
-                          style={{ marginRight: "0.5rem" }}
-                          onClick={() => {
-                            setDisplayBooking((prev) => !prev);
-                          }}
-                        >
-                          <input
-                            type="checkbox"
-                            name="booking"
-                            id="public"
-                            checked={displayBooking}
-                          />
-                          {i18n.t("group_booking")}
-                        </div>
-                        <div
-                          className="btn btn-outline-purple"
-                          onClick={() => {
-                            setDisplayBookingPt((prev) => !prev);
-                          }}
-                        >
-                          <input
-                            type="checkbox"
-                            name="booking"
-                            id="private"
-                            checked={displayBookingPt}
-                          />
-                          {i18n.t("booking_pt")}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )}
                 <div className="filter-group">
                   <label className="filter-label">{`${i18n.t("email")}/${i18n.t(
                     "phone"
@@ -1177,15 +976,6 @@ const Booking = (props) => {
                   />
                 </div>
               </Collapse>
-            </div>
-            <div>
-              <QRCodeCheckInScanner
-                onResult={handleScanCheckIn}
-                showCamera={showCamera}
-                setShowCamera={setShowCamera}
-                ref={qrScannerRef}
-                hide={true}
-              />
             </div>
             <div
               style={{
@@ -1253,7 +1043,7 @@ const Booking = (props) => {
                 headerToolbar={{
                   start: "prevOfData,title,nextOfData todayOfData",
                   center: "monthOfData weekOfData dayOfData listOfData",
-                  end: "AddNewBooking QrScanner",
+                  end: "AddNewBooking",
                 }}
                 dateClick={(e) => handleDateClick(e)}
                 views={{

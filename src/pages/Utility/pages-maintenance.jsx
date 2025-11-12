@@ -7,8 +7,7 @@ import CardMaintenance from "./card-maintenance"
 
 //Import Images
 import maintenance from "../../assets/images/maintenance.svg"
-import logodark from "../../assets/images/logo-dark.png";
-import logolight from "../../assets/images/logo-light.png";
+import placeholderLogo from "../../assets/images/logo-placeholder.svg";
 
 const PagesMaintenance = () => {
 
@@ -28,13 +27,13 @@ const PagesMaintenance = () => {
                 <div className="mb-5">
                   <Link to="/" className="d-block auth-logo" >
                     <img
-                      src={logodark}
+                      src={placeholderLogo}
                       alt=""
                       height="18"
                       className="auth-logo-dark mx-auto"
                     />
                     <img
-                      src={logolight}
+                      src={placeholderLogo}
                       alt=""
                       height="18"
                       className="auth-logo-light mx-auto"

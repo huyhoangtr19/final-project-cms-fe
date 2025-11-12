@@ -265,13 +265,6 @@ export const lIST_SIDEBAR_CONTENT = [
   //   key: "booking:view_list",
   // },
   {
-    id: 16,
-    name: "staff_schedule",
-    icon: "fa fa-clock",
-    link: "/staff-schedule",
-    key: "staff:view_list",
-  },
-  {
     id: 3,
     name: "class",
     icon: "bx-pulse",
@@ -313,13 +306,6 @@ export const lIST_SIDEBAR_CONTENT = [
     link: "/package",
     key: "package:view_list",
   },
-  {
-    id: 9,
-    name: "retail_product",
-    icon: "bxs-shopping-bag-alt",
-    link: "/retail-product",
-    key: ["product_category:view_list", "product:view_list"],
-  },
   // {
   //   id: 10,
   //   name: "location",
@@ -334,13 +320,6 @@ export const lIST_SIDEBAR_CONTENT = [
   //   link: "/operator-info",
   //   key: "all",
   // },
-  {
-    id: 12,
-    name: "customer_review",
-    icon: "dripicons-message",
-    link: "/customer-review",
-    key: "review:view_list",
-  },
   // {
   //   id: 13,
   //   name: "user",
@@ -349,25 +328,11 @@ export const lIST_SIDEBAR_CONTENT = [
   //   key: "user:view_list",
   // },
   {
-    id: 14,
-    name: "notification",
-    icon: "dripicons-bell",
-    link: "/notification",
-    key: "all",
-  },
-  {
     id: 15,
     name: "settings",
     icon: "bx-cog",
     link: "/settings?tab=0",
     key: "all"
-  },
-  {
-    id: 16,
-    name: "notice",
-    icon: "dripicons-bell",
-    link: "/notice",
-    key: "all",
   },
 ];
 

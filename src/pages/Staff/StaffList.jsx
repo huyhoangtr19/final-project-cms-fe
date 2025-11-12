@@ -15,7 +15,6 @@ import staffService from "../../services/staff.service";
 import departmentService from "../../services/department.service";
 import operatorService from "../../services/operator.service";
 import i18n from "../../i18n";
-import ExcelJS from "exceljs";
 import { debounce } from "lodash";
 // import { set } from "lodash";
 
@@ -25,7 +24,7 @@ const listStatus = [
 ];
 
 const StaffList = (props) => {
-  document.title = "Staff | Actiwell System";
+  document.title = "Staff | Fitness CMS";
   const path = useLocation();
   const { hasOperator, operator } = useAppSelector((state) => state.operator);
   const { permissionUser } = useAppSelector((state) => state.auth);
@@ -44,11 +43,6 @@ const StaffList = (props) => {
   const [department, setDepartment] = useState("");
   const [deleteId, setDeleteId] = useState("");
   const [isOpen, setIsOpen] = useState(false);
-  const [isOpenImport, setIsOpenImport] = useState(false);
-  const [isOpenExport, setIsOpenExport] = useState(false);
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
-  const [locationExport, setLocationExport] = useState("");
 
   const handleCheckboxChange = (choose) => {
     setSelectedStaff((prevSelected) => {
@@ -198,163 +192,6 @@ const StaffList = (props) => {
       handleDeleteMulti();
     }
     setIsOpen(false);
-  };
-
-  const handleImportWorkSchedule = async (e) => {
-    try {
-      const files = Array.from(e.target.files);
-
-      if (files.length) {
-        const formData = new FormData();
-        formData.append("file", files[0]);
-
-        const response = await staffService.importSchedule(formData);
-        console.log("response", response);
-      }
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setIsOpenImport(false);
-    }
-  };
-  const downloadTemplate = async () => {
-    try {
-      const response = await staffService.exportSchedule();
-      const url = window.URL.createObjectURL(response);
-
-      const link = document.createElement("a");
-      link.href = url;
-      link.setAttribute("download", "work_schedule_template.xlsx");
-      document.body.appendChild(link);
-      link.click();
-      link.parentNode.removeChild(link);
-      window.URL.revokeObjectURL(url);
-    } catch (e) {
-      console.log("e", e);
-    }
-  };
-  const handleExportExcel2 = async () => {
-    try {
-      const workbook = new ExcelJS.Workbook();
-      const worksheet = workbook.addWorksheet("Timesheet");
-      const res = await operatorService.getTimeSheetByLocation(locationExport, {
-        start_date: startDate,
-        end_date: endDate,
-      });
-
-      const locationData = await operatorService.getDetailLocation(
-        locationExport || ""
-      );
-      const data = res?.data || [];
-      if (res.data && locationData) {
-        worksheet.mergeCells("A2:B2");
-
-        worksheet.getCell("A2").value = "Bảng chấm công";
-        worksheet.getCell("A2").style.font = { bold: true, size: 16 };
-        worksheet.getCell("A3").value = `Email`;
-        worksheet.getCell("B3").value = locationData?.data?.email;
-        worksheet.getCell("A4").value = `Địa điểm`;
-        worksheet.getCell("B4").value = locationData?.data?.address;
-        worksheet.getCell("A5").value = `Thời gian`;
-        worksheet.getCell("B5").value = `${startDate} đến ${endDate}`;
-        worksheet.getCell("A6").value = `Số lượng nhân viên`;
-        worksheet.getCell("B6").value = `${data.staff_number || 0}`;
-
-
-        const headerRow = [
-          "STT",
-          "Ngày",
-          "Phòng",
-          "Tên",
-          "ID Nhân viên",
-          "Giờ vào theo lịch làm việc",
-          "Giờ vào thực tế",
-          "Vào trễ",
-          "Giờ ra theo lịch làm việc",
-          "Giờ ra thực tế",
-          "Ra sớm",
-          "Số giờ làm việc",
-          "Ghi chú",
-        ];
-
-        // Add header row
-        worksheet.addRow(headerRow);
-
-        // Style header row: bold, center, border, blue background
-        const headerRowExcel = worksheet.getRow(7);
-        headerRowExcel.eachCell((cell) => {
-          cell.font = { bold: true, color: { argb: "FFFFFFFF" } };
-          cell.alignment = { vertical: "middle", horizontal: "center" };
-          cell.border = {
-            top: { style: "thin" },
-            left: { style: "thin" },
-            bottom: { style: "thin" },
-            right: { style: "thin" },
-          };
-          cell.fill = {
-            type: "pattern",
-            pattern: "solid",
-            fgColor: { argb: "FF1D39C4" }, // blue
-          };
-        });
-
-        data.timesheets.forEach((staff, index) => {
-          const fullName = `${staff.last_name} ${staff.first_name}`;
-          // const position = staff.position_name || "";
-          const department = staff.department_name || "";
-          const row = [
-            index + 1,
-            staff.date,
-            department,
-            fullName,
-            staff.id,
-            staff.from,
-            staff.checkin_time || "",
-            staff.is_late ? 1 : 0,
-            staff.to,
-            staff.checkout_time || "",
-            staff.is_early_leave ? 1 : 0,
-            staff.working_hours || "0:00",
-          ];
-
-          worksheet.addRow(row);
-        });
-
-        // Style (Header bold + borders)
-        worksheet.getRow(1).eachCell((cell) => {
-          cell.font = { bold: true };
-          cell.alignment = { vertical: "middle", horizontal: "center" };
-          cell.border = {
-            top: { style: "thin" },
-            left: { style: "thin" },
-            bottom: { style: "thin" },
-            right: { style: "thin" },
-          };
-        });
-
-        worksheet.columns.forEach((col) => {
-          col.width = 35;
-        });
-
-        // Generate file
-        const buffer = await workbook.xlsx.writeBuffer();
-        saveAs(new Blob([buffer]), "timesheet.xlsx");
-        toast.success(i18n.t("export_success"), {
-          position: "top-right",
-          autoClose: 2000,
-          theme: "light",
-          hideProgressBar: true,
-        });
-      }
-    } catch (e) {
-      console.log("e", e);
-      toast.error(i18n.t("export_fail"), {
-        position: "top-right",
-        autoClose: 2000,
-        theme: "light",
-        hideProgressBar: true,
-      });
-    }
   };
 
   const isAllChecked = useMemo(() => {
@@ -516,24 +353,6 @@ const StaffList = (props) => {
                       </div>
                     </button>
                   </Link>
-                  <div
-                    className="btn btn-primary btn-block d-flex gap-1"
-                    onClick={() => setIsOpenImport(true)}
-                  >
-                    <i className="fa fa-file-import" style={{ padding: "0 5px" }}></i>
-                    <div style={{ lineHeight: "17px" }}>
-                      {i18n.t("import_work_schedule")}
-                    </div>
-                  </div>
-                  <div
-                    className="btn btn-primary btn-block d-flex gap-1"
-                    onClick={() => setIsOpenExport(true)}
-                  >
-                    <i className="fa fa-file-export" style={{ padding: "0 5px" }}></i>
-                    <div style={{ lineHeight: "17px" }}>
-                      {i18n.t("export_timekeeping_data")}
-                    </div>
-                  </div>
                   <Button
                     color="danger"
                     outline={true}
@@ -700,110 +519,6 @@ const StaffList = (props) => {
               </div>
             )}
           </div>
-          <MyModalTemplate
-            isOpen={isOpenExport}
-            onClose={() => setIsOpenExport(false)}
-          >
-            <div className="d-flex flex-column gap-3">
-              <h3>{i18n.t("export_timekeeping_data")}</h3>
-              <div className="d-flex justify-content-between">
-                <div className="d-flex flex-row gap-2 justify-content-between">
-                  <Input
-                    id="start_date"
-                    name="start_date"
-                    type="date"
-                    placeholder={i18n.t("start_date")}
-                    // required
-                    value={startDate}
-                    // invalid={
-                    onChange={(e) => {
-                      setStartDate(e.target.value);
-                    }}
-                  />
-                  <Input
-                    id="end_date"
-                    name="end_date"
-                    type="date"
-                    placeholder={i18n.t("end_date")}
-                    // required
-                    value={endDate}
-                    onChange={(e) => {
-                      setEndDate(e.target.value);
-                    }}
-                  />
-                </div>
-              </div>
-              <MyDropdown
-                options={listLocation}
-                selected={locationExport}
-                displayEmpty={true}
-                setSelected={(e) => setLocationExport(e)}
-                placeholder={i18n.t("location")}
-                isForm={true}
-              />
-              <div className="d-flex align-items-end">
-                <Button
-                  disabled={
-                    !startDate ||
-                    !endDate ||
-                    !locationExport ||
-                    new Date(startDate) >= new Date(endDate)
-                  }
-                  type="button"
-                  className="btn btn-secondary btn-block"
-                  onClick={handleExportExcel2}
-                >
-                  {i18n.t("export_excel")}
-                </Button>
-              </div>
-            </div>
-          </MyModalTemplate>
-          <MyModalTemplate
-            isOpen={isOpenImport}
-            onClose={() => setIsOpenImport(false)}
-          >
-            <div className="d-flex flex-column gap-3">
-              <div
-                className=""
-                style={{
-                  border: "2px dashed #000",
-                  borderRadius: "8px",
-                  padding: "48px",
-                  textAlign: "center",
-                  color: "#000",
-                  background: "#fff",
-                }}
-              >
-                {/* {i18n.t("import_instruction") || "Drag and drop your file here or click to select a file."} */}
-
-                <div>
-                  <label className="m-0" htmlFor="import-work-schedule">
-                    <div className=" px-2 d-flex flex-column gap-1 align-items-center justify-content-center">
-                      <IcPlus color="#000" />
-                      <div className="" style={{ lineHeight: "17px" }}>
-                        {i18n.t("import_working_schedule_excel")}
-                      </div>
-                    </div>
-                  </label>
-                  <input
-                    type="file"
-                    id="import-work-schedule"
-                    accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                    style={{ display: "none" }}
-                    onChange={handleImportWorkSchedule}
-                  />
-                </div>
-              </div>
-              <div className="d-flex items-start">
-                <div
-                  className="btn btn-primary btn-block px-2"
-                  onClick={downloadTemplate}
-                >
-                  {i18n.t("download_template")}
-                </div>
-              </div>
-            </div>
-          </MyModalTemplate>
 
           <MyModalTemplate isOpen={isOpen} onClose={() => setIsOpen(false)} size="sm">
             <div className="d-flex flex-column gap-3">

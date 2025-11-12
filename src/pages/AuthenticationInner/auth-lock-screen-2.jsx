@@ -9,8 +9,8 @@ import * as Yup from "yup";
 import { useFormik } from "formik";
 
 // import images
-import logoDark from "../../assets/images/logo-dark.png";
-import logoLight from "../../assets/images/logo-light.png";
+import logoDark from "../../assets/images/logo-placeholder.svg";
+import logoLight from "../../assets/images/logo-placeholder.svg";
 import user from "../../assets/images/users/avatar-1.jpg";
 import CarouselPage from "./CarouselPage";
 

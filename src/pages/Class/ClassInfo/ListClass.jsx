@@ -23,7 +23,7 @@ import i18n from "../../../i18n";
 import { clone, debounce, wrap } from "lodash";
 
 const ListClass = (props) => {
-  document.title = "Class List | Actiwell System";
+  document.title = "Class List | Fitness CMS";
   const { id } = useParams();
   const { permissionUser } = useAppSelector((state) => state.auth);
   const [classes, setClasses] = useState([]);

@@ -251,31 +251,31 @@
 }
 
 .mm-active {
-  color: $actiwell-cream !important;
+  color: $brand-cream !important;
 
   >a {
-    color: $actiwell-cream !important;
+    color: $brand-cream !important;
 
     i {
-      color: $actiwell-cream !important;
+      color: $brand-cream !important;
     }
   }
 
   .active {
-    color: $actiwell-cream !important;
-    background-color: $actiwell-navy;
+    color: $brand-cream !important;
+    background-color: $brand-navy;
 
     &:hover {
-      background-color: $actiwell-navy !important;
+      background-color: $brand-navy !important;
     }
 
     i {
-      color: $actiwell-cream !important;
+      color: $brand-cream !important;
     }
   }
 
   >i {
-    color: $actiwell-cream !important;
+    color: $brand-cream !important;
   }
 }
 
@@ -460,7 +460,7 @@
 
           li.active {
             a {
-              color: $actiwell-cream;
+              color: $brand-cream;
             }
           }
         }

@@ -82,7 +82,7 @@ const SaleDetail = (props) => {
     return permissionUser.includes("sale_order:update_info");
   }, [permissionUser]);
 
-  document.title = "Sale | Actiwell System";
+  document.title = "Sale | Fitness CMS";
 
   const validation = useFormik({
     enableReinitialize: true,

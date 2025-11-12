@@ -1,15 +1,15 @@
 {
-  "short_name": "Actiwell",
-  "name": "Actiwell",
+  "short_name": "FitPro",
+  "name": "Fitness CMS",
   "icons": [
     {
-      "src": "/src/favicon.ico",
-      "type": "image/x-icon",
+      "src": "/src/favicon.svg",
+      "type": "image/svg+xml",
       "sizes": "192x192"
     },
     {
-      "src": "/src/favicon.ico",
-      "type": "image/x-icon",
+      "src": "/src/favicon.svg",
+      "type": "image/svg+xml",
       "sizes": "512x512"
     }
   ],

@@ -307,7 +307,7 @@ body[data-layout="horizontal"] {
 
 @media screen and (max-width: $bp-phone) {
   .header-title {
-    color: $actiwell-navy;
+    color: $brand-navy;
     padding-right: 0.5rem;
     margin-bottom: 0;
     font-size: $text-sm;
@@ -319,14 +319,14 @@ body[data-layout="horizontal"] {
 }
 
 .header-title {
-  color: $actiwell-navy;
+  color: $brand-navy;
   padding-right: 0.5rem;
   margin-bottom: 0;
   font-size: $text-base;
 }
 
 .header-subtitle {
-  color: tint-color($actiwell-navy, 25%);
+  color: tint-color($brand-navy, 25%);
   margin-bottom: 0;
   font-size: $text-base;
 }

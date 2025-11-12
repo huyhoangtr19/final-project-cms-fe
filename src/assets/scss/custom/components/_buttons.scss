@@ -46,36 +46,36 @@ a {
 }
 
 .btn-primary {
-    background-color: $actiwell-navy;
+    background-color: $brand-navy;
     border-radius: $radius-lg;
     font-weight: $font-medium;
     transition: all $transition-fast;
 
     &:hover {
-        background-color: $actiwell-navy-dark;
-        border-color: $actiwell-navy-dark;
+        background-color: $brand-navy-dark;
+        border-color: $brand-navy-dark;
     }
 }
 
 .btn-secondary {
-    background-color: $actiwell-red;
-    color: $actiwell-cream;
-    border-color: $actiwell-red;
+    background-color: $brand-red;
+    color: $brand-cream;
+    border-color: $brand-red;
 
     &:hover {
-        background-color: $actiwell-red-dark;
-        border-color: $actiwell-red-dark;
+        background-color: $brand-red-dark;
+        border-color: $brand-red-dark;
     }
 }
 
 .btn-outline {
     background-color: transparent;
-    color: $actiwell-navy;
-    border-color: $actiwell-navy;
+    color: $brand-navy;
+    border-color: $brand-navy;
 
     &:hover {
-        background-color: $actiwell-navy;
-        color: $actiwell-cream;
+        background-color: $brand-navy;
+        color: $brand-cream;
     }
 }
 
@@ -86,7 +86,7 @@ a {
 
     &:hover {
         background-color: #7c3aed;
-        color: $actiwell-cream;
+        color: $brand-cream;
     }
 
     input {
@@ -101,7 +101,7 @@ a {
 
     &:hover {
         background-color: $warning;
-        color: $actiwell-cream;
+        color: $brand-cream;
     }
 
     input {
@@ -116,7 +116,7 @@ a {
 
     &:hover {
         background-color: $success;
-        color: $actiwell-cream;
+        color: $brand-cream;
     }
 }
 
@@ -131,18 +131,18 @@ a {
 
     &:hover {
         background-color: $danger;
-        color: $actiwell-cream;
+        color: $brand-cream;
     }
 }
 
 .btn-outline-secondary {
     background-color: transparent;
-    color: $actiwell-red;
-    border-color: $actiwell-red;
+    color: $brand-red;
+    border-color: $brand-red;
 
     &:hover {
-        background-color: $actiwell-red;
-        color: $actiwell-cream;
+        background-color: $brand-red;
+        color: $brand-cream;
     }
 }
 
@@ -176,16 +176,16 @@ a {
     top: $space-2;
     right: $space-2;
     font-size: $text-xs;
-    border: 2px solid $actiwell-navy;
+    border: 2px solid $brand-navy;
     width: fit-content !important;
 
     &:hover {
-        border: 2px solid $actiwell-navy;
+        border: 2px solid $brand-navy;
     }
 
     &.active {
         background-color: $color-success;
-        color: $actiwell-cream;
+        color: $brand-cream;
         border-color: #187a3c !important;
     }
 
@@ -334,8 +334,8 @@ $value in $theme-colors {
     margin: 0;
 
     &:checked {
-        background-color: $actiwell-red;
-        border-color: $actiwell-red;
+        background-color: $brand-red;
+        border-color: $brand-red;
     }
 
     &:focus {

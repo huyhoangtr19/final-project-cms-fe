@@ -20,7 +20,7 @@ const listSection = [
   { name: "booking_history", id: "3" },
 ];
 const CustomerTab = (props) => {
-  document.title = "Customer Detail | Actiwell System";
+  document.title = "Customer Detail | Fitness CMS";
   const [currentTabActive, setCurrentTabActive] = useState("1");
   const handleClick = (section) => {
     setCurrentTabActive(section.id);

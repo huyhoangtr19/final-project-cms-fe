@@ -36,7 +36,7 @@ const StaffActivities = (props) => {
 
   const exportToExcel = async () => {
     const workbook = new ExcelJS.Workbook();
-    workbook.creator = "Actiwell";
+    workbook.creator = "FitPro";
     workbook.created = new Date();
 
     // =============================

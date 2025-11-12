@@ -20,7 +20,7 @@
 
     // Title
     h2.fc-toolbar-title {
-      color: $actiwell-navy;
+      color: $brand-navy;
       padding: 0.2rem 0.4rem;
       font-size: $text-lg;
       text-align: center;
@@ -45,7 +45,7 @@
 }
 
 .view-btn {
-  color: $actiwell-navy;
+  color: $brand-navy;
   padding: $space-1 $space-3;
   background: transparent;
   border: none;
@@ -62,8 +62,8 @@
 .view-btn.active,
 .view-btn.highlighted-toolbar,
 .view-btn:hover {
-  background: $actiwell-navy;
-  color: $actiwell-cream;
+  background: $brand-navy;
+  color: $brand-cream;
   box-shadow: $shadow-sm;
 }
 
@@ -156,7 +156,7 @@
     width: 100%;
 
     div {
-      color: $actiwell-navy;
+      color: $brand-navy;
       width: 24px;
       height: 24px;
       display: flex;
@@ -166,7 +166,7 @@
   }
 
   div.fc-scrollgrid-sync-inner {
-    color: $actiwell-navy;
+    color: $brand-navy;
   }
 
   // Fix daygrid heigth
@@ -185,16 +185,16 @@
 
     .fc-daygrid-day-frame {
       background-color: $color-gray-100;
-      border: 2px solid $actiwell-navy;
+      border: 2px solid $brand-navy;
       height: 100%;
 
       .fc-daygrid-day-number {
         div {
-          background: $actiwell-navy;
+          background: $brand-navy;
           width: 24px;
           height: 24px;
           border-radius: 50%;
-          color: $actiwell-cream;
+          color: $brand-cream;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -245,7 +245,7 @@
       height: inherit;
 
       .nb-event-day {
-        background-color: $actiwell-navy;
+        background-color: $brand-navy;
       }
     }
   }
@@ -290,13 +290,13 @@
 
           .fc-timeline-slot-cushion {
             position: absolute;
-            color: $actiwell-navy;
+            color: $brand-navy;
             top: calc(-72px + $space-2) !important;
           }
 
           .fc-col-header-cell-cushion {
             position: relative;
-            color: $actiwell-navy;
+            color: $brand-navy;
             top: calc(-72px + $space-2) !important;
           }
 
@@ -432,8 +432,8 @@
 }
 
 .fc-list-day-cushion {
-  background-color: $actiwell-navy-light;
-  color: $actiwell-cream;
+  background-color: $brand-navy-light;
+  color: $brand-cream;
   border-radius: $radius-sm;
 }
 
@@ -441,8 +441,8 @@
 // Mobile toolbar
 //
 .btn-mob-menu {
-  color: $actiwell-cream;
-  background-color: $actiwell-navy;
+  color: $brand-cream;
+  background-color: $brand-navy;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -459,8 +459,8 @@
 
   &:hover {
     transform: translateY(-1px);
-    background-color: $actiwell-navy-dark;
-    border-color: $actiwell-navy-dark;
+    background-color: $brand-navy-dark;
+    border-color: $brand-navy-dark;
     font-weight: $font-medium;
   }
 }

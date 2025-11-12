@@ -13,7 +13,7 @@ import ListScheduleInfo from "./ListScheduleInfo";
 import i18n from "../../../i18n";
 
 const ClassInfo = (props) => {
-  document.title = "Class | Actiwell System";
+  document.title = "Class | Fitness CMS";
   const [currentTabActive, setCurrentTabActive] = useState("1");
   const listSection = [
     { name: i18n.t("class_schedule"), id: "1" },

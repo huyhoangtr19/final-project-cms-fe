@@ -4,8 +4,8 @@ import { Link } from "react-router-dom"
 import CarouselPage from "./CarouselPage"
 
 // import images
-import logoDark from "../../assets/images/logo-dark.png"
-import logoLight from "../../assets/images/logo-light.png"
+import logoDark from "../../assets/images/logo-placeholder.svg"
+import logoLight from "../../assets/images/logo-placeholder.svg"
 
 const TwostepVerification2 = () => {
 

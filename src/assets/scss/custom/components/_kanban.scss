@@ -12,14 +12,14 @@
 }
 
 .e-header-cells {
-    background-color: $actiwell-navy !important;
+    background-color: $brand-navy !important;
     height: fit-content !important;
     border-radius: $radius-md !important;
     padding: $space-2 !important;
     cursor: pointer;
 
     &[data-key="0"] {
-        background-color: $actiwell-navy-light !important;
+        background-color: $brand-navy-light !important;
     }
 
     &[data-key="1"] {
@@ -39,7 +39,7 @@
 .e-header-text,
 .e-item-count,
 .e-header-icon {
-    color: $actiwell-cream !important;
+    color: $brand-cream !important;
     font-size: $text-sm !important;
     line-height: normal !important;
 }
@@ -66,8 +66,8 @@
 }
 
 .kanban-card-header-title {
-    background-color: $actiwell-navy;
-    color: $actiwell-cream;
+    background-color: $brand-navy;
+    color: $brand-cream;
     padding: $space-1 $space-2;
     font-weight: $font-bold;
 }
@@ -95,7 +95,7 @@
 
     &[data-key="0"] {
         .kanban-card-header-title {
-            background-color: $actiwell-navy !important;
+            background-color: $brand-navy !important;
         }
     }
 

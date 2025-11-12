@@ -24,7 +24,7 @@ import CustomerKanban from "./CustomerKanban";
 import { debounce, isArray } from "lodash";
 
 const Customer = (props) => {
-  document.title = "Customer | Actiwell System";
+  document.title = "Customer | Fitness CMS";
   const { permissionUser } = useAppSelector((state) => state.auth);
   //   const { hasOperator, operator } = useAppSelector((state) => state.operator);
   const [customers, setCustomers] = useState([]);
@@ -213,23 +213,6 @@ const Customer = (props) => {
     props.router.navigate(
       `/customer/detail/${customer.id}/${customer.customer_id}`
     );
-  };
-
-  const handleSyncHanetData = async () => {
-    try {
-      const res = await customerService.syncCustomerFromHanet();
-      if (res.success) {
-        toast.success(i18n.t("sync_hanet_data_success"), {
-          position: "top-right",
-          autoClose: 2000,
-          theme: "light",
-          hideProgressBar: true,
-        });
-        await handleGetListCustomer();
-      }
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   const handleImportCustomers = async (e) => {
@@ -466,20 +449,6 @@ const Customer = (props) => {
                         </div>
                       </button>
                     </Link>
-                    <Button
-                      color="primary"
-                      onClick={() => setIsOpenImport(true)}
-                    >
-                      <i className="fa fa-file-import" style={{ padding: "0 5px" }}></i>
-                      {i18n.t("import_customers")}
-                    </Button>
-                    <div
-                      onClick={handleSyncHanetData}
-                      className="btn btn-primary btn-block d-flex gap-1">
-                      <div className="" style={{ lineHeight: "17px" }}>
-                        {i18n.t("sync_hanet_data")}
-                      </div>
-                    </div>
                     <Button
                       color="danger"
                       outline

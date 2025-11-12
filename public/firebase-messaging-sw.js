@@ -10,9 +10,9 @@ importScripts(
 // https://firebase.google.com/docs/web/setup#config-object
 firebase.initializeApp({
   apiKey: "AIzaSyAJXwqQZjz7m_CUZ1-TTp1pbeFXrUmTUBw",
-  authDomain: "actiwell-74477.firebaseapp.com",
-  projectId: "actiwell-74477",
-  storageBucket: "actiwell-74477.firebasestorage.app",
+  authDomain: "fitpro-74477.firebaseapp.com",
+  projectId: "fitpro-74477",
+  storageBucket: "fitpro-74477.firebasestorage.app",
   messagingSenderId: "447988273650",
   appId: "1:447988273650:web:1fcc681c248e9282b99b6b",
   measurementId: "G-MTD9JJ4F3W",

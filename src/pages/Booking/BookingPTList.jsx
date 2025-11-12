@@ -55,7 +55,7 @@ const StatusDot = styled.span`
 `;
 
 const BookingPTList = (props) => {
-  document.title = "Private Booking | Actiwell System";
+  document.title = "Private Booking | Fitness CMS";
   const calendarRef = useRef(null);
 
   const getCalendarApi = () => {

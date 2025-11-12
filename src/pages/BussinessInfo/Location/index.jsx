@@ -25,7 +25,7 @@ import i18n from "../../../i18n";
 import { debounce } from "lodash";
 
 const Location = (props) => {
-  // document.title = "Location | Actiwell System";
+  // document.title = "Location | Fitness CMS";
 
   const path = useLocation();
   const { t } = useTranslation();

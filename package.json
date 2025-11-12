@@ -1,7 +1,8 @@
 {
-  "name": "Actiwell-System",
+  "name": "fitness-cms",
   "private": true,
   "version": "1.0.0",
+  "description": "Simplified CMS for fitness centres – Graduation Project",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

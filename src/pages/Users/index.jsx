@@ -26,7 +26,7 @@ const listStatus = [
 ];
 
 const Users = (props) => {
-  // document.title = "Users | Actiwell System";
+  // document.title = "Users | Fitness CMS";
 
   const { hasOperator, operator } = useAppSelector((state) => state.operator);
   const [users, setUsers] = useState([]);

@@ -40,7 +40,7 @@ import { toast } from "react-toastify";
 
 const Login = (props) => {
   //meta title
-  document.title = "Login | Actiwell System";
+  document.title = "Login | Fitness CMS";
   const dispatch = useDispatch();
   const [checkSave, setCheckSave] = React.useState(true);
   const [errorApi, setErrorApi] = React.useState("");
@@ -131,7 +131,7 @@ const Login = (props) => {
                   <Row>
                     <Col>
                       <div className="text-center text-primary p-4">
-                        <h3 className="text-primary">ACTIWELL SYSTEM</h3>
+                        <h3 className="text-primary">FITPRO CMS</h3>
                       </div>
                     </Col>
                   </Row>

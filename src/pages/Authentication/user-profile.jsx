@@ -36,7 +36,7 @@ import i18n from "../../i18n.jsx";
 
 const UserProfile = (props) => {
   //meta title
-  document.title = "Profile | Actiwell System";
+  document.title = "Profile | Fitness CMS";
   const listSection = [
     { name: i18n.t("user_info"), id: "1" },
     { name: i18n.t("change_password"), id: "2" },

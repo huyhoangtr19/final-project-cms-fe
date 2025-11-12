@@ -10,7 +10,7 @@ import Breadcrumb from "../../components/Common/Breadcrumb";
 
 const Home = (props) => {
   const path = useLocation();
-  document.title = "Home | Actiwell System";
+  document.title = "Home | Fitness CMS";
   return (
     <React.Fragment>
       <div className="page-content">

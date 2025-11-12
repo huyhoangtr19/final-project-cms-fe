@@ -13,7 +13,7 @@ import Policy from "../Policy";
 import CustomerGroup from "../CustomerGroup";
 
 const Settings = (props) => {
-  document.title = "Settings | Actiwell System";
+  document.title = "Settings | Fitness CMS";
 
   const location = useLocation();
 

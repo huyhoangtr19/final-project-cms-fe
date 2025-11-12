@@ -35,14 +35,14 @@
 .filter-title {
     font-size: $text-lg;
     font-weight: $font-semibold;
-    color: $actiwell-navy;
+    color: $brand-navy;
     margin: 0;
 }
 
 .filter-clear {
     background: none;
     border: none;
-    color: $actiwell-red;
+    color: $brand-red;
     font-size: $text-sm;
     font-weight: $font-medium;
     cursor: pointer;
@@ -58,7 +58,7 @@
 .filter-reset {
     background: none;
     border: none;
-    color: $actiwell-red;
+    color: $brand-red;
     font-size: $text-sm;
     font-weight: $font-medium;
     cursor: pointer;
@@ -104,7 +104,7 @@
 
     &:focus {
         outline: none;
-        border-color: $actiwell-navy !important;
+        border-color: $brand-navy !important;
         box-shadow: 0 0 0 3px rgba(58, 59, 92, 0.1);
     }
 }
@@ -117,8 +117,8 @@
 }
 
 .filter-tag {
-    background: $actiwell-navy;
-    color: $actiwell-cream;
+    background: $brand-navy;
+    color: $brand-cream;
     padding: $space-2 $space-4;
     border-radius: $radius-full;
     font-size: $text-xs;
@@ -131,7 +131,7 @@
 .filter-tag-remove {
     background: rgba(244, 241, 237, 0.2);
     border: none;
-    color: $actiwell-cream;
+    color: $brand-cream;
     width: 16px;
     height: 16px;
     border-radius: 50%;

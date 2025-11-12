@@ -30,7 +30,7 @@ import { toast } from "react-toastify";
 
 const RegisterAdmin = (props) => {
   //meta title
-  document.title = "Register admin | Actiwell System";
+  document.title = "Register admin | Fitness CMS";
   const [showPassword, setShowPassword] = React.useState(false);
   const validation = useFormik({
     // enableReinitialize : use this flag when initial values needs to be changed
@@ -88,7 +88,7 @@ const RegisterAdmin = (props) => {
                   <Row>
                     <Col>
                       <div className="text-center text-primary p-4">
-                        <h3 className="text-primary">ACTIWELL SYSTEM</h3>
+                        <h3 className="text-primary">FITPRO CMS</h3>
                       </div>
                     </Col>
                   </Row>

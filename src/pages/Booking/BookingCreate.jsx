@@ -6,7 +6,7 @@ import BookingPTDetail from "./BookingPTDetail";
 import BookingDetail from "./BookingDetail";
 
 const CreateBooking = (props) => {
-  document.title = "Create booking | Actiwell System";
+  document.title = "Create booking | Fitness CMS";
 
   const [currentTabActive, setCurrentTabActive] = useState("0");
 

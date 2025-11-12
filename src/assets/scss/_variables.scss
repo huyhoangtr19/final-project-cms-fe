@@ -8,16 +8,16 @@
 // custom-variables
 //
 /* Primary Brand Colors - From Logo */
-$actiwell-navy: #3A3B5C;           /* Primary navy from logo */
-$actiwell-navy-dark: #2A2B3C;      /* Darker variant */
-$actiwell-navy-light: #4A4B6C;     /* Lighter variant */
+$brand-navy: #3A3B5C;           /* Primary navy from logo */
+$brand-navy-dark: #2A2B3C;      /* Darker variant */
+$brand-navy-light: #4A4B6C;     /* Lighter variant */
 
-$actiwell-red: #C42E2A;            /* Primary red from logo */
-$actiwell-red-dark: #A42620;       /* Darker variant */
-$actiwell-red-light: #D43E3A;      /* Lighter variant */
+$brand-red: #C42E2A;            /* Primary red from logo */
+$brand-red-dark: #A42620;       /* Darker variant */
+$brand-red-light: #D43E3A;      /* Lighter variant */
 
-$actiwell-cream: #F4F1ED;          /* Cream from logo text */
-$actiwell-cream-dark: #E4E1DD;     /* Darker cream */
+$brand-cream: #F4F1ED;          /* Cream from logo text */
+$brand-cream-dark: #E4E1DD;     /* Darker cream */
 
 /* Semantic Colors */
 $color-success: #16A34A;
@@ -248,8 +248,8 @@ $colors: (
 // scss-docs-end colors-map
 
 // scss-docs-start theme-color-variables
-$primary:       $actiwell-navy;
-$secondary:     $actiwell-red;
+$primary:       $brand-navy;
+$secondary:     $brand-red;
 $success:       $color-success;
 $info:          $color-info;
 $warning:       $color-warning;

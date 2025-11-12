@@ -16,8 +16,8 @@ import { Link } from "react-router-dom";
 
 // import images
 import profileImg from "../../assets/images/profile-img.png";
-import logo from "../../assets/images/logo.svg";
-import lightlogo from "../../assets/images/logo-light.svg";
+import logo from "../../assets/images/logo-placeholder.svg";
+import lightlogo from "../../assets/images/logo-placeholder.svg";
 
 const Register = () => {
   document.title = "Register | Skote - Vite React Admin & Dashboard Template";

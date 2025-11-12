@@ -16,10 +16,7 @@ import NotificationDropdown from "../CommonForBoth/TopbarDropdown/NotificationDr
 import ProfileMenu from "../CommonForBoth/TopbarDropdown/ProfileMenu";
 
 import megamenuImg from "../../assets/images/megamenu-img.png";
-import logo from "../../assets/images/logo.svg";
-import logoLight from "../../assets/images/logo-light.png";
-import logoLightSvg from "../../assets/images/logo-light.svg";
-import logoDark from "../../assets/images/logo-dark.png";
+import placeholderLogo from "../../assets/images/logo-placeholder.svg";
 
 // import images
 import github from "../../assets/images/brands/github.png";
@@ -71,19 +68,19 @@ const Header = (props) => {
             <div className="navbar-brand-box">
               <Link to="/" className="logo logo-dark">
                 <span className="logo-sm">
-                  <img src={logo} alt="" height="22" />
+                  <img src={placeholderLogo} alt="" height="22" />
                 </span>
                 <span className="logo-lg">
-                  <img src={logoDark} alt="" height="17" />
+                  <img src={placeholderLogo} alt="" height="17" />
                 </span>
               </Link>
 
               <Link to="/" className="logo logo-light">
                 <span className="logo-sm">
-                  <img src={logoLightSvg} alt="" height="22" />
+                  <img src={placeholderLogo} alt="" height="22" />
                 </span>
                 <span className="logo-lg">
-                  <img src={logoLight} alt="" height="19" />
+                  <img src={placeholderLogo} alt="" height="19" />
                 </span>
               </Link>
             </div>
@@ -400,7 +397,7 @@ const Header = (props) => {
             <div className="d-lg-none d-md-block">
               <div className="position-relative">
                 <Link to="/" className="">
-                  <h3>ACTIWELL</h3>
+                  <h3>FITPRO</h3>
                 </Link>
               </div>
             </div>
@@ -408,7 +405,7 @@ const Header = (props) => {
             <form className="d-none d-lg-block">
               <div className="position-relative">
                 <Link to="/" className="">
-                  <h3>ACTIWELL</h3>
+                  <h3>FITPRO</h3>
                 </Link>
               </div>
             </form>

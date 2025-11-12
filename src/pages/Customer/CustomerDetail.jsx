@@ -77,7 +77,7 @@ const CustomerDetail = (props) => {
   const [customerGroup, setCustomerGroup] = useState([]);
   const [isOpen, setIsOpen] = useState(false);
 
-  document.title = "Customer | Actiwell System";
+  document.title = "Customer | Fitness CMS";
 
   const validation = useFormik({
     enableReinitialize: true,

@@ -39,7 +39,7 @@ import i18n from "../../i18n";
 
 const ChangePassWord = (props) => {
   //meta title
-  document.title = "Change Password | Actiwell System";
+  document.title = "Change Password | Fitness CMS";
 
   const [showPassword, setShowPassword] = React.useState(false);
   const [showRePassword, setShowRePassword] = React.useState(false);
@@ -115,7 +115,7 @@ const ChangePassWord = (props) => {
                   <Row>
                     <Col>
                       <div className="text-center text-primary p-4">
-                        <h3 className="text-primary">ACTIWELL SYSTEM</h3>
+                        <h3 className="text-primary">FITPRO CMS</h3>
                       </div>
                     </Col>
                   </Row>

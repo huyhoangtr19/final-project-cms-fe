@@ -73,7 +73,7 @@ const DeleteButton = styled.div`
 `;
 
 const OperatorInfo = (props) => {
-  // document.title = "Operator Info | Actiwell System";
+  // document.title = "Operator Info | Fitness CMS";
   const path = useLocation();
   const { t } = useTranslation();
   const { hasOperator, operator } = useAppSelector((state) => state.operator);

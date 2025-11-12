@@ -10,7 +10,7 @@ import ModalMarketSegment from "./ModalMarketSegment";
 import TreeComponent from "../TreeComponent";
 
 const MarketSegment = (props) => {
-  // document.title = "Market Segment | Actiwell System";
+  // document.title = "Market Segment | Fitness CMS";
 
   const { permissionUser } = useAppSelector((state) => state.auth);
 

@@ -26,7 +26,7 @@ const InvalidFeedback = styled.div`
 `;
 
 const PolicyDetail = (props) => {
-  document.title = "Policy | Actiwell System";
+  document.title = "Policy | Fitness CMS";
 
   const { id } = useParams();
   const [currentTabActive, setCurrentTabActive] = useState(0);

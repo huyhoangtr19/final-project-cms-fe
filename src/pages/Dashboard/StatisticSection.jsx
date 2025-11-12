@@ -283,25 +283,6 @@ const StatisticSection = ({ locationList }) => {
             </div>
           </SectionDiv>
         </Col>
-        <Col md={2}></Col>
-        <Col md={5}>
-          <SectionDiv>
-            <div className="d-flex flex-column">
-              <div style={{ fontSize: 18, color: "#000000" }}>
-                {i18n.t('retail_product')}
-              </div>
-              <div style={{ fontSize: 25, color: "#000000" }}>
-                $ {formatNumberAsCurrency(data.product.current)}
-              </div>
-              <div style={{ fontSize: 11, color: "#4CAAFF", minHeight: 16.5 }}>
-                {getValueWithPrevious(
-                  data.product.current,
-                  data.product.previous
-                )}
-              </div>
-            </div>
-          </SectionDiv>
-        </Col>
       </Row>
     </div>
   );

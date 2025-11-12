@@ -6,13 +6,13 @@
 
 .table {
     .daily-total-header {
-        background-color: $actiwell-red;
-        border-left: 2px solid $actiwell-red-dark;
+        background-color: $brand-red;
+        border-left: 2px solid $brand-red-dark;
     }
 
     .daily-total {
-        color: $actiwell-red;
-        background-color: rgba($actiwell-red, 0.1);
-        border-left: 2px solid $actiwell-red-dark;
+        color: $brand-red;
+        background-color: rgba($brand-red, 0.1);
+        border-left: 2px solid $brand-red-dark;
     }
 }
